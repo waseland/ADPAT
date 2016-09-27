@@ -39,14 +39,48 @@ namespace DPA_Musicsheets
             this.MidiTracks = new ObservableCollection<MidiTrack>();
             InitializeComponent();
             DataContext = MidiTracks;
-            FillPSAMViewer();
+            FillTestPSAMViewer();
+            //FillPSAMViewer();
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
+        }
+
+        private void FillTestPSAMViewer()
+        {
+            IEnumerable<MidiTrack> testList = MidiReader.ReadMidi(txt_MidiFilePath.Text);
+            KeyCodeConvertor kc = new KeyCodeConvertor();
+
+            staff.ClearMusicalIncipit();
+
+            staff.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
+            staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
+
+            Note tempNote = null;
+
+            Console.WriteLine("#######################################################################################################");
+            Console.WriteLine("#######################################################################################################");
+            Console.WriteLine("####################################### --- New Track --- #############################################");
+            Console.WriteLine("#######################################################################################################");
+            Console.WriteLine("#######################################################################################################");
+
+            for (int noteCount = 0; noteCount < testList.ElementAt(1).Messages.Count; noteCount++)
+            {
+                tempNote = kc.getNote(testList.ElementAt(1).Messages.ElementAt(noteCount));
+                if(tempNote != null)
+                {
+                    staff.AddMusicalSymbol(tempNote);
+                }
+            }
+            //staff.AddMusicalSymbol(kc.getNote(testString));
+            //staff.AddMusicalSymbol(new Note("A", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
+            //staff.AddMusicalSymbol(new Note("B", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
+            //staff.AddMusicalSymbol(new Note("C", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
         }
 
         private void FillPSAMViewer()
         {
+            //String s = txt_MidiFilePath.Text;
+            IEnumerable<MidiTrack> testList = MidiReader.ReadMidi(txt_MidiFilePath.Text);
             staff.ClearMusicalIncipit();
-
             // Clef = sleutel
             staff.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
             staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
@@ -66,7 +100,8 @@ namespace DPA_Musicsheets
                         viewer.AddMusicalSymbol(e); 
             */
 
-            staff.AddMusicalSymbol(new Note("A", 0, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
+            staff.AddMusicalSymbol(new Note("A", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
+            staff.AddMusicalSymbol(new Note("A", 0, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Stop, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
             staff.AddMusicalSymbol(new Note("C", 1, 5, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Continue, NoteBeamType.End }));
             staff.AddMusicalSymbol(new Note("D", 0, 5, MusicalSymbolDuration.Eighth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.End }));
             staff.AddMusicalSymbol(new Barline());
@@ -102,6 +137,7 @@ namespace DPA_Musicsheets
             if (openFileDialog.ShowDialog() == true)
             {
                 txt_MidiFilePath.Text = openFileDialog.FileName;
+                FillTestPSAMViewer();
             }
         }
         
