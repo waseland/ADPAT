@@ -150,7 +150,19 @@ namespace DPA_Musicsheets
 
         private void btn_ShowContent_Click(object sender, RoutedEventArgs e)
         {
-            ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
+            string extension = txt_MidiFilePath.Text.Split('.').Last();
+
+            if (extension == "mid")
+            {
+                ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
+                MidiToObject midiToObject = new MidiToObject(txt_MidiFilePath.Text);
+            }
+            else if (extension == "ly")
+            {
+                LyToObject lyToObject = new LyToObject(txt_MidiFilePath.Text);
+            }
+            //-----------------------------------------------------------------
+            //ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
         }
 
         private void ShowMidiTracks(IEnumerable<MidiTrack> midiTracks)

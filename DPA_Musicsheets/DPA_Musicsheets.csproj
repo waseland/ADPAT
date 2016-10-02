@@ -86,6 +86,9 @@
   <ItemGroup>
     <Compile Include="MidiPlayer.cs" />
     <Compile Include="MidiReader.cs" />
+    <Compile Include="Models\MusicNote.cs" />
+    <Compile Include="Models\MusicPart.cs" />
+    <Compile Include="Models\MusicStaff.cs" />
     <Compile Include="Models\NoteBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

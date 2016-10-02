@@ -36,6 +36,13 @@ namespace DPA_Musicsheets
                             var channelMessage = midiEvent.MidiMessage as ChannelMessage;
                             // Data1: De keycode. 0 = laagste C, 1 = laagste C#, 2 = laagste D etc.
                             // 160 is centrale C op piano.
+                            //string tempString = "";
+                            //tempString += "Keycode: " + channelMessage.Data1 + ", ";
+                            //tempString += "Strength: " + channelMessage.Data2 + ", ";
+                            //tempString += "Command: " + channelMessage.Command + ", ";
+                            //tempString += "AbsoluteTicks: " + midiEvent.AbsoluteTicks + ", ";
+                            //tempString += "DeltaTicks: " + midiEvent.DeltaTicks;
+                            //trackLog.Messages.Add(tempString);
                             trackLog.Messages.Add(String.Format("Keycode: {0}, Command: {1}, absolute time: {2}, delta time: {3}, strength: {4}"
                                 , channelMessage.Data1, channelMessage.Command, midiEvent.AbsoluteTicks, midiEvent.DeltaTicks, channelMessage.Data2));
                             break;
@@ -49,6 +56,7 @@ namespace DPA_Musicsheets
                         case MessageType.Meta:
                             var metaMessage = midiEvent.MidiMessage as MetaMessage;
                             trackLog.Messages.Add(GetMetaString(metaMessage));
+                            
                             if (metaMessage.MetaType == MetaType.TrackName)
                             {
                                 trackLog.TrackName += " " + Encoding.Default.GetString(metaMessage.GetBytes());
@@ -64,7 +72,7 @@ namespace DPA_Musicsheets
             }
         }
 
-        private static string GetMetaString(MetaMessage metaMessage)
+        public static string GetMetaString(MetaMessage metaMessage)
         {
             byte[] bytes = metaMessage.GetBytes();
             switch (metaMessage.MetaType)
