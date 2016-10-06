@@ -16,7 +16,7 @@ namespace DPA_Musicsheets
         {
             MyTrack track = new MyTrack();
             track.TrackName = trackName;
-            track.TimeSignature = timeSignature;
+            //track.TimeSignature = timeSignature;
             track.Tempo = Int32.Parse(tempo.Substring(7));
             track.TicksPerBeat = ticksperBeat;
 

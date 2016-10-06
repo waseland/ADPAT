@@ -89,9 +89,9 @@
     <Compile Include="MidiReader.cs" />
     <Compile Include="Models\DoubleValueVariable.cs" />
     <Compile Include="Models\MyMusicSheet.cs" />
-    <Compile Include="Models\MyNote.cs" />
+    <Compile Include="Models\MyMusicalSymbol.cs" />
     <Compile Include="Models\MyTrack.cs" />
-    <Compile Include="MyNoteBuilder.cs" />
+    <Compile Include="MyMusicalSymbolBuilder.cs" />
     <Compile Include="MyTrackBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

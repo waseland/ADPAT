@@ -40,20 +40,21 @@ namespace DPA_Musicsheets
             this.MidiTracks = new ObservableCollection<MidiTrack>();
             InitializeComponent();
             DataContext = MidiTracks;
-            FillTestPSAMViewer();
+            FillPSAMViewer();
             //FillPSAMViewer();
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
         }
 
-        private void ShowTrack(MyTrack _myTrack)
+        private void ShowTrack(MyTrack _myTrack, int _timeSignatureUp, int _timeSignatureDown)
         {
             Console.WriteLine("New Version!!!!!");
             staff.ClearMusicalIncipit();
 
             staff.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
-            staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
+            staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)_timeSignatureUp, (uint)_timeSignatureDown));
+            staff.AddMusicalSymbol(new Barline());
 
-            foreach (MyNote tempNote in _myTrack.Notes)
+            foreach (MyMusicalSymbol tempNote in _myTrack.Notes)
             {
                 if (tempNote.IsPause)
                 {
@@ -69,6 +70,11 @@ namespace DPA_Musicsheets
                     {
                         staff.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
                     }
+                }
+
+                if (tempNote.IsEndOfBar)
+                {
+                    staff.AddMusicalSymbol(new Barline());
                 }
             }
         }
@@ -166,7 +172,7 @@ namespace DPA_Musicsheets
                 //FillTestPSAMViewer();
                 MidiConverter midiConverter = new MidiConverter();
                 MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                ShowTrack(mss.Tracks[1]);
+                ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
             }
         }
         
@@ -186,7 +192,7 @@ namespace DPA_Musicsheets
                 ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
                 MidiConverter midiConverter = new MidiConverter();
                 MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                ShowTrack(mss.Tracks[0]);
+                ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
             }
             // TODO: add lilypond file extension
         }

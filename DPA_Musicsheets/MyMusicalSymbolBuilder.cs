@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets
 {
-    public class MyNoteBuilder
+    public class MyMusicalSymbolBuilder
     {
-        public MyNote BuildNote(ChannelMessage _message, MidiEvent _midiEvent, double _wholeNoteLength)
+        public MyMusicalSymbol BuildMusicalSymbol(ChannelMessage _message, MidiEvent _midiEvent, double _wholeNoteLength)
         {
             if (_midiEvent.DeltaTicks == 0)
             {
                 return null;
             }
 
-            MyNote note = new MyNote(_message.Data1, _midiEvent.AbsoluteTicks);
+            MyMusicalSymbol note = new MyMusicalSymbol(_message.Data1, _midiEvent.AbsoluteTicks);
 
             if (_midiEvent.DeltaTicks != 0 && _message.Data2 != 0)
             {
@@ -29,6 +29,13 @@ namespace DPA_Musicsheets
             if (length != null) {
                 note.HasDot = length.HasDot;
                 note.Duration = length.Duration;
+
+                if (note.AbsoluteTicks % _wholeNoteLength == 0)
+                {
+                    //end of bar
+                    note.IsEndOfBar = true;
+                }
+
                 return note;
             } else
             {

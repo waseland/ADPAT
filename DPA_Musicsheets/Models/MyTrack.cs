@@ -10,21 +10,21 @@ namespace DPA_Musicsheets.Models
     public class MyTrack
     {
         public string TrackName { get; set; }
-        public int[] TimeSignature { get; set; }
+        //public int[] TimeSignature { get; set; }
         public int Tempo { get; set; }
         public int TicksPerBeat { get; set; }
 
-        public List<MyNote> Notes;
+        public List<MyMusicalSymbol> Notes;
 
         public MyTrack()
         {
-            TimeSignature = new int[2];
-            Notes = new List<MyNote>();
+            //TimeSignature = new int[2];
+            Notes = new List<MyMusicalSymbol>();
         }
 
-        public void AddNote(MyNote note)
+        public void AddMusicalNote(MyMusicalSymbol _musicalSymbol)
         {
-            Notes.Add(note);
+            Notes.Add(_musicalSymbol);
         }
 
         public void SetNoteDuration()

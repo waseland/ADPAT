@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Models
 {
-    public class MyNote
+    public class MyMusicalSymbol
     {
         private List<string> keyValues;
         public string Key { get; set; }
@@ -20,7 +20,7 @@ namespace DPA_Musicsheets.Models
         public bool HasDot { get; set; }
         public MusicalSymbolDuration Duration { get; set; }
 
-        public MyNote(int _keyValue, int _absoluteTicks)
+        public MyMusicalSymbol(int _keyValue, int _absoluteTicks)
         {
             InitKeyValues();
             SetKey(_keyValue % 12);

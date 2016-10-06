@@ -11,13 +11,13 @@ namespace DPA_Musicsheets
     public class MidiConverter
     {
         private MyTrackBuilder trackBuilder;
-        private MyNoteBuilder noteBuilder;
+        private MyMusicalSymbolBuilder noteBuilder;
         private List<Models.MyTrack> Tracks;
 
         public MidiConverter()
         {
             //trackBuilder = new MyTrackBuilder();
-            noteBuilder = new MyNoteBuilder();
+            noteBuilder = new MyMusicalSymbolBuilder();
         }
 
         public MyMusicSheet convertMidi(String path)
@@ -49,10 +49,10 @@ namespace DPA_Musicsheets
 
                         if (channelMessage.Command == ChannelCommand.NoteOn || channelMessage.Command == ChannelCommand.NoteOff)
                         {
-                            MyNote tempNote = noteBuilder.BuildNote(channelMessage, midiEvent, wholeNoteLength);
+                            MyMusicalSymbol tempNote = noteBuilder.BuildMusicalSymbol(channelMessage, midiEvent, wholeNoteLength);
                             if(tempNote != null)
                             {
-                                tempMyTrack.AddNote(tempNote);
+                                tempMyTrack.AddMusicalNote(tempNote);
                             }
                         }
                     }
@@ -68,8 +68,8 @@ namespace DPA_Musicsheets
                         if (metaMessage.MetaType == MetaType.TimeSignature)
                         {
                             byte[] bytes = metaMessage.GetBytes();
-                            tempMyTrack.TimeSignature[0] = bytes[0];
-                            tempMyTrack.TimeSignature[1] = (int)(1 / Math.Pow(bytes[1], -2));
+                            musicSheet.TimeSignature[0] = bytes[0];
+                            musicSheet.TimeSignature[1] = (int)(1 / Math.Pow(bytes[1], -2));
                         }
                         if (metaMessage.MetaType == MetaType.EndOfTrack)
                         {
