@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using DPA_Musicsheets.Models;
+using Microsoft.Win32;
 using PSAMControlLibrary;
 using Sanford.Multimedia.Midi;
 using System;
@@ -44,6 +45,34 @@ namespace DPA_Musicsheets
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
         }
 
+        private void ShowTrack(MyTrack _myTrack)
+        {
+            Console.WriteLine("New Version!!!!!");
+            staff.ClearMusicalIncipit();
+
+            staff.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
+            staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
+
+            foreach (MyNote tempNote in _myTrack.Notes)
+            {
+                if (tempNote.IsPause)
+                {
+                    //rest
+                    staff.AddMusicalSymbol(new Rest(tempNote.Duration));
+                } else
+                {
+                    //note
+                    if (tempNote.HasDot)
+                    {
+                        staff.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = 1 });
+                    } else
+                    {
+                        staff.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
+                    }
+                }
+            }
+        }
+
         private void FillTestPSAMViewer()
         {
             IEnumerable<MidiTrack> testList = MidiReader.ReadMidi(txt_MidiFilePath.Text);
@@ -56,11 +85,11 @@ namespace DPA_Musicsheets
 
             Note tempNote = null;
 
-            Console.WriteLine("#######################################################################################################");
-            Console.WriteLine("#######################################################################################################");
-            Console.WriteLine("####################################### --- New Track --- #############################################");
-            Console.WriteLine("#######################################################################################################");
-            Console.WriteLine("#######################################################################################################");
+            //Console.WriteLine("#######################################################################################################");
+            //Console.WriteLine("#######################################################################################################");
+            //Console.WriteLine("####################################### --- New Track --- #############################################");
+            //Console.WriteLine("#######################################################################################################");
+            //Console.WriteLine("#######################################################################################################");
 
             for (int noteCount = 0; noteCount < testList.ElementAt(1).Messages.Count; noteCount++)
             {
@@ -70,10 +99,6 @@ namespace DPA_Musicsheets
                     staff.AddMusicalSymbol(tempNote);
                 }
             }
-            //staff.AddMusicalSymbol(kc.getNote(testString));
-            //staff.AddMusicalSymbol(new Note("A", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
-            //staff.AddMusicalSymbol(new Note("B", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
-            //staff.AddMusicalSymbol(new Note("C", 1, 4, MusicalSymbolDuration.Sixteenth, NoteStemDirection.Down, NoteTieType.Start, new List<NoteBeamType>() { NoteBeamType.Start, NoteBeamType.Start }));
         }
 
         private void FillPSAMViewer()
@@ -138,7 +163,10 @@ namespace DPA_Musicsheets
             if (openFileDialog.ShowDialog() == true)
             {
                 txt_MidiFilePath.Text = openFileDialog.FileName;
-                FillTestPSAMViewer();
+                //FillTestPSAMViewer();
+                MidiConverter midiConverter = new MidiConverter();
+                MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                ShowTrack(mss.Tracks[1]);
             }
         }
         
@@ -150,19 +178,17 @@ namespace DPA_Musicsheets
 
         private void btn_ShowContent_Click(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("HIEEEEEEEEEEEEEEEEER!!!!!!!!!!!!");
             string extension = txt_MidiFilePath.Text.Split('.').Last();
 
             if (extension == "mid")
             {
                 ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
-                MidiToObject midiToObject = new MidiToObject(txt_MidiFilePath.Text);
+                MidiConverter midiConverter = new MidiConverter();
+                MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                ShowTrack(mss.Tracks[0]);
             }
-            else if (extension == "ly")
-            {
-                LyToObject lyToObject = new LyToObject(txt_MidiFilePath.Text);
-            }
-            //-----------------------------------------------------------------
-            //ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
+            // TODO: add lilypond file extension
         }
 
         private void ShowMidiTracks(IEnumerable<MidiTrack> midiTracks)

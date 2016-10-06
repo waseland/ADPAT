@@ -14,24 +14,24 @@ namespace DPA_Musicsheets.Models
         public int Tempo { get; set; }
         public int TicksPerBeat { get; set; }
 
-        public List<MyNote> notes;
+        public List<MyNote> Notes;
 
         public MyTrack()
         {
-            notes = new List<MyNote>();
+            TimeSignature = new int[2];
+            Notes = new List<MyNote>();
         }
 
-        public void AddNote(ChannelMessage message, MidiEvent midiEvent)
+        public void AddNote(MyNote note)
         {
-            MyNote note = new MyNote(message.Data1, midiEvent.AbsoluteTicks);
-            notes.Add(note);
+            Notes.Add(note);
         }
 
         public void SetNoteDuration()
         {
-            for (int i = 0; i < notes.Count - 1; i++)
+            for (int i = 0; i < Notes.Count - 1; i++)
             {
-                notes[i].Type = ((double)notes[i + 1].AbsoluteTicks - (double)notes[i].AbsoluteTicks) / (double)TicksPerBeat;
+                Notes[i].Type = ((double)Notes[i + 1].AbsoluteTicks - (double)Notes[i].AbsoluteTicks) / (double)TicksPerBeat;
             }
         }
     }

@@ -11,20 +11,22 @@ namespace DPA_Musicsheets.Models
     {
         private List<string> keyValues;
         public string Key { get; set; }
-        public enum alterValue { none, sharp, flat };
-        public alterValue Alter { get; set; }
+        public int Alter { get; set; }
         public int Octave { get; set; }
         public double Type { get; set; }
         public bool IsPause { get; set; }
         public int AbsoluteTicks { get; set; }
         public bool IsEndOfBar { get; set; }
+        public bool HasDot { get; set; }
+        public MusicalSymbolDuration Duration { get; set; }
 
         public MyNote(int _keyValue, int _absoluteTicks)
         {
             InitKeyValues();
             SetKey(_keyValue % 12);
-            Octave = _keyValue / 12;
+            Octave = _keyValue / 12 - 1;
             AbsoluteTicks = _absoluteTicks;
+            HasDot = false;
         }
 
         public void InitKeyValues()
@@ -49,5 +51,13 @@ namespace DPA_Musicsheets.Models
             this.Key = keyValues[keyCode];
         }
 
+        public MusicalSymbol getNote()
+        {
+            if (IsPause)
+            {
+                return new Rest(Duration);
+            }
+            return new Note(Key, Alter, Octave, Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single });
+        }
     }
 }

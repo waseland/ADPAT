@@ -12,7 +12,7 @@ namespace DPA_Musicsheets
     {
         public List<MyTrack> tracks = new List<MyTrack>();
 
-        public void buildMidiToObjectTrack(string trackName, int[] timeSignature, string tempo, int ticksperBeat, List<Tuple<ChannelMessage, MidiEvent>> notes)
+        public void buildMidiToObjectTrack(string trackName, int[] timeSignature, string tempo, int ticksperBeat)
         {
             MyTrack track = new MyTrack();
             track.TrackName = trackName;
@@ -20,18 +20,8 @@ namespace DPA_Musicsheets
             track.Tempo = Int32.Parse(tempo.Substring(7));
             track.TicksPerBeat = ticksperBeat;
 
-            foreach (Tuple<ChannelMessage, MidiEvent> c in notes)
-            {
-                track.AddNote(c.Item1, c.Item2);
-            }
-
             track.SetNoteDuration();
             tracks.Add(track);
-        }
-
-        public void buildLyToObjectTrack()
-        {
-
         }
     }
 }
