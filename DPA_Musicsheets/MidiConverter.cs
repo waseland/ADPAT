@@ -10,7 +10,6 @@ namespace DPA_Musicsheets
 {
     public class MidiConverter
     {
-        private MyTrackBuilder trackBuilder;
         private MyMusicalSymbolBuilder noteBuilder;
         private List<Models.MyTrack> Tracks;
 

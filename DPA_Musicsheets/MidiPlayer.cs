@@ -11,7 +11,7 @@ namespace DPA_Musicsheets
     public class MidiPlayer : IDisposable
     {
         private OutputDevice _outDevice;
-        
+
         // De inhoud voor de midi file. Hier zitten onder andere tracks en metadata in.
         private Sequence _sequence;
 
@@ -36,7 +36,7 @@ namespace DPA_Musicsheets
                 _sequencer.Stop();
             };
         }
-        
+
         public void Play(string midiFileLocation)
         {
             this._sequence = new Sequence();
@@ -50,7 +50,7 @@ namespace DPA_Musicsheets
             this._sequencer.Sequence = this._sequence;
             StartPlaying();
         }
-        
+
         private void OnSequenceLoadCompleted(object sender, AsyncCompletedEventArgs e)
         {
             _sequencer.Sequence = _sequence;
