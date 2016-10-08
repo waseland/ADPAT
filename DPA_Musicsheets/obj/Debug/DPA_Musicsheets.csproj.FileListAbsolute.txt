@@ -37,8 +37,6 @@ C:\Users\woute_000\Documents\GitHub\DPA_Startup_Musicsheets-master\DPA_Musicshee
 C:\Users\woute_000\Documents\GitHub\DPA_Startup_Musicsheets-master\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.exe
 C:\Users\woute_000\Documents\GitHub\DPA_Startup_Musicsheets-master\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.pdb
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\bin\Debug\DPA_Musicsheets.exe.config
-C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.exe
-C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.pdb
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\bin\Debug\DPA_Musicsheets.exe
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\bin\Debug\DPA_Musicsheets.pdb
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\bin\Debug\PSAMControlLibrary.dll
@@ -55,3 +53,5 @@ C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\MainWindow.b
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.g.resources
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.Properties.Resources.resources
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.csproj.GenerateResource.Cache
+C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.exe
+C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.pdb
