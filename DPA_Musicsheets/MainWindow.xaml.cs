@@ -1,6 +1,7 @@
 ﻿using DPA_Musicsheets.Models;
 using Microsoft.Win32;
 using PSAMControlLibrary;
+using PSAMWPFControlLibrary;
 using Sanford.Multimedia.Midi;
 using System;
 using System.Collections.Generic;
@@ -45,64 +46,52 @@ namespace DPA_Musicsheets
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
         }
 
+        private IncipitViewerWPF createNewBarline(int _timeSignatureUp, int _timeSignatureDown)
+        {
+            IncipitViewerWPF barLine = new IncipitViewerWPF();
+            barLine.Width = 525;
+
+            barLine.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
+            barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)_timeSignatureUp, (uint)_timeSignatureDown));
+            barLine.AddMusicalSymbol(new Barline());
+
+            return barLine;
+        }
+
         private void ShowTrack(MyTrack _myTrack, int _timeSignatureUp, int _timeSignatureDown)
         {
-            Console.WriteLine("New Version!!!!!");
-            staff.ClearMusicalIncipit();
-
-            staff.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
-            staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)_timeSignatureUp, (uint)_timeSignatureDown));
-            staff.AddMusicalSymbol(new Barline());
+            int barCount = 0;
+            barlinesStackPanel.Children.Clear();
+            IncipitViewerWPF barLine = createNewBarline(_timeSignatureUp, _timeSignatureDown);
 
             foreach (MyMusicalSymbol tempNote in _myTrack.Notes)
             {
                 if (tempNote.IsPause)
                 {
                     //rest
-                    staff.AddMusicalSymbol(new Rest(tempNote.Duration));
+                    barLine.AddMusicalSymbol(new Rest(tempNote.Duration));
                 } else
                 {
                     //note
                     if (tempNote.HasDot)
                     {
-                        staff.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = 1 });
+                        barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = 1 });
                     } else
                     {
-                        staff.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
+                        barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, tempNote.Duration, NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
                     }
                 }
 
                 if (tempNote.IsEndOfBar)
                 {
-                    staff.AddMusicalSymbol(new Barline());
-                }
-            }
-        }
-
-        private void FillTestPSAMViewer()
-        {
-            IEnumerable<MidiTrack> testList = MidiReader.ReadMidi(txt_MidiFilePath.Text);
-            KeyCodeConvertor kc = new KeyCodeConvertor();
-
-            staff.ClearMusicalIncipit();
-
-            staff.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
-            staff.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
-
-            Note tempNote = null;
-
-            //Console.WriteLine("#######################################################################################################");
-            //Console.WriteLine("#######################################################################################################");
-            //Console.WriteLine("####################################### --- New Track --- #############################################");
-            //Console.WriteLine("#######################################################################################################");
-            //Console.WriteLine("#######################################################################################################");
-
-            for (int noteCount = 0; noteCount < testList.ElementAt(1).Messages.Count; noteCount++)
-            {
-                tempNote = kc.getNote(testList.ElementAt(1).Messages.ElementAt(noteCount));
-                if(tempNote != null)
-                {
-                    staff.AddMusicalSymbol(tempNote);
+                    barCount++;
+                    barLine.AddMusicalSymbol(new Barline());
+                    if(barCount == 3)
+                    {
+                        barlinesStackPanel.Children.Add(barLine);
+                        barLine = createNewBarline(_timeSignatureUp, _timeSignatureDown);
+                        barCount = 0;
+                    }
                 }
             }
         }
@@ -184,7 +173,6 @@ namespace DPA_Musicsheets
 
         private void btn_ShowContent_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("HIEEEEEEEEEEEEEEEEER!!!!!!!!!!!!");
             string extension = txt_MidiFilePath.Text.Split('.').Last();
 
             if (extension == "mid")

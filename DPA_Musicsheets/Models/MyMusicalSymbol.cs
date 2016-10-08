@@ -50,14 +50,5 @@ namespace DPA_Musicsheets.Models
         {
             this.Key = keyValues[keyCode];
         }
-
-        public MusicalSymbol getNote()
-        {
-            if (IsPause)
-            {
-                return new Rest(Duration);
-            }
-            return new Note(Key, Alter, Octave, Duration, NoteStemDirection.Up, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single });
-        }
     }
 }
