@@ -1,4 +1,6 @@
-﻿using DPA_Musicsheets.Models;
+﻿using DPA_Musicsheets.Midi;
+using DPA_Musicsheets.Models;
+using DPA_Musicsheets.MusicComponentModels;
 using Microsoft.Win32;
 using PSAMControlLibrary;
 using PSAMWPFControlLibrary;
@@ -23,9 +25,6 @@ using System.Windows.Shapes;
 
 namespace DPA_Musicsheets
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private MidiPlayer _player;
@@ -46,6 +45,16 @@ namespace DPA_Musicsheets
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
         }
 
+        private IncipitViewerWPF createNewBarline()
+        {
+            IncipitViewerWPF barLine = new IncipitViewerWPF();
+            barLine.Width = 525;
+
+            barLine.AddMusicalSymbol(new Clef(ClefType.GClef, 2));
+
+            return barLine;
+        }
+
         private IncipitViewerWPF createNewBarline(int _timeSignatureUp, int _timeSignatureDown)
         {
             IncipitViewerWPF barLine = new IncipitViewerWPF();
@@ -56,6 +65,80 @@ namespace DPA_Musicsheets
             barLine.AddMusicalSymbol(new Barline());
 
             return barLine;
+        }
+
+        private void ShowADPTrack(ADPTrack _myTrack)
+        {
+            int barCount = 0;
+            int[] timeSignature = new int[2];
+
+            // clear view
+            barlinesStackPanel.Children.Clear();
+
+            IncipitViewerWPF barLine = createNewBarline();
+
+            foreach (ADPBar tempBar in _myTrack.Bars)
+            {
+                if(tempBar.TimeSignature != timeSignature)
+                {
+                    timeSignature = tempBar.TimeSignature;
+                    barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)timeSignature[0], (uint)timeSignature[0]));
+                }
+
+                // add symbols
+                foreach(ADPMusicalSymbol tempSymbol in tempBar.MusicalSymbols)
+                {
+                    if (tempSymbol.GetType() == typeof(ADPRest) )
+                    {
+                        //rest
+                        barLine.AddMusicalSymbol(new Rest(ConvertDuration(tempSymbol.Duration)));
+                    }
+                    else
+                    {
+                        ADPNote tempNote = (ADPNote)tempSymbol;
+                        //note
+                        if (tempNote.AmountOfDots > 0)
+                        {
+                            barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = tempNote.AmountOfDots });
+                        }
+                        else
+                        {
+                            barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
+                        }
+                    }
+                }
+
+                // add endOfBarLine
+
+                barCount++;
+                barLine.AddMusicalSymbol(new Barline());
+                if (barCount == 3)
+                {
+                    barlinesStackPanel.Children.Add(barLine);
+                    barLine = createNewBarline();
+                    barCount = 0;
+                }
+                barLine.AddMusicalSymbol(new Barline());
+            }
+        }
+
+        private MusicalSymbolDuration ConvertDuration(int _duration)
+        {
+            switch (_duration)
+            {
+                case 16:
+                    return MusicalSymbolDuration.Sixteenth;
+                case 8:
+                    return MusicalSymbolDuration.Eighth;
+                case 4:
+                    return MusicalSymbolDuration.Quarter;
+                case 2:
+                    return MusicalSymbolDuration.Half;
+                case 1:
+                    return MusicalSymbolDuration.Whole;
+                default:
+                    return MusicalSymbolDuration.Unknown;
+            }
         }
 
         private void ShowTrack(MyTrack _myTrack, int _timeSignatureUp, int _timeSignatureDown)
@@ -178,9 +261,12 @@ namespace DPA_Musicsheets
             if (extension == "mid")
             {
                 ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
-                MidiConverter midiConverter = new MidiConverter();
-                MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
+                //MidiConverter midiConverter = new MidiConverter();
+                //MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                //ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
+                MidiADPConverter midiConverter = new MidiADPConverter();
+                ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                ShowADPTrack(sheet.Tracks[1]);
             }
             // TODO: add lilypond file extension
         }
