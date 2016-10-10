@@ -36,8 +36,8 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <StackPanel x:Name="barlinesStackPanel">
-            <PSAMWPFControl:IncipitViewerWPF HorizontalAlignment="Left" Margin="0,300,0,0" Width="525" x:Name="staff" >
+        <StackPanel x:Name="barlinesStackPanel" Margin="0,300,0,0">
+            <PSAMWPFControl:IncipitViewerWPF HorizontalAlignment="Left" Width="525" x:Name="staff" >
             </PSAMWPFControl:IncipitViewerWPF>
         </StackPanel>
     </Grid>
