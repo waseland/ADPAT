@@ -87,10 +87,18 @@
   <ItemGroup>
     <Compile Include="MidiPlayer.cs" />
     <Compile Include="MidiReader.cs" />
-    <Compile Include="Models\DoubleValueVariable.cs" />
-    <Compile Include="Models\MyMusicSheet.cs" />
-    <Compile Include="Models\MyMusicalSymbol.cs" />
-    <Compile Include="Models\MyTrack.cs" />
+    <Compile Include="DoubleValueVariable.cs" />
+    <Compile Include="Midi\MidiConverter.cs" />
+    <Compile Include="Midi\MidiMusicalSymbolBuilder.cs" />
+    <Compile Include="MyMusicSheet.cs" />
+    <Compile Include="MyMusicalSymbol.cs" />
+    <Compile Include="MyTrack.cs" />
+    <Compile Include="MusicComponentModels\ADPBar.cs" />
+    <Compile Include="MusicComponentModels\ADPMusicalSymbol.cs" />
+    <Compile Include="MusicComponentModels\ADPNote.cs" />
+    <Compile Include="MusicComponentModels\ADPRest.cs" />
+    <Compile Include="MusicComponentModels\ADPSheet.cs" />
+    <Compile Include="MusicComponentModels\ADPTrack.cs" />
     <Compile Include="MyMusicalSymbolBuilder.cs" />
     <Compile Include="MyTrackBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
