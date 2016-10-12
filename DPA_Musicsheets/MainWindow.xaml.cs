@@ -79,7 +79,12 @@ namespace DPA_Musicsheets
 
             foreach (ADPBar tempBar in _myTrack.Bars)
             {
-                if(tempBar.TimeSignature != timeSignature)
+                if(timeSignature == null)
+                {
+                    timeSignature[0] = 4;
+                    timeSignature[1] = 4;
+                }
+                if(tempBar.TimeSignature != timeSignature && tempBar.TimeSignature != null)
                 {
                     timeSignature = tempBar.TimeSignature;
                     barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)timeSignature[0], (uint)timeSignature[0]));
