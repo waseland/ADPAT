@@ -83,7 +83,7 @@ namespace DPA_Musicsheets
                 {
                     timeSignature = tempBar.TimeSignature;
                     //barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
-                    barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)timeSignature[0], (uint)timeSignature[0]));
+                    barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)timeSignature[0], (uint)timeSignature[1]));
                 }
 
                 // add symbols
@@ -245,6 +245,8 @@ namespace DPA_Musicsheets
                 MidiADPConverter midiConverter = new MidiADPConverter();
                 ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
                 ShowADPTrack(sheet.Tracks[1]);
+                NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
+                lilypondText.Text = ntlc.getLilypond(sheet);
             }
         }
         

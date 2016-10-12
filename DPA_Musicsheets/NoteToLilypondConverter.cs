@@ -14,9 +14,20 @@ namespace DPA_Musicsheets
             string result = "";
             result += "\\relative c' {\n";
             result += "\\clef treble\n";
-            result += "\\time 4/4\n";
-            result += "\\tempo 4=120";
+            result += "\\time ";
+            result += musicSheet.Tracks[1].Bars[1].TimeSignature[0];
+            result += "/";
+            result += musicSheet.Tracks[1].Bars[1].TimeSignature[1];
+            result += "\n";
+            result += "\\tempo 4=120\n";
+            
             // add notes
+            foreach(ADPBar bar in musicSheet.Tracks[1].Bars)
+            {
+                result += convertBar(bar);
+            }
+
+            result += "}";
 
             return result;
         }
@@ -28,7 +39,7 @@ namespace DPA_Musicsheets
             {
                 if (musicalSymbol is ADPNote)
                 {
-                    result += ((ADPNote)musicalSymbol).Key.ToLower();
+                    result += ((ADPNote)musicalSymbol).Key.Substring(0,1).ToLower();
                     if(((ADPNote)musicalSymbol).Alter == 1)
                     {
                         // C#
