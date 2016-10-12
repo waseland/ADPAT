@@ -20,55 +20,114 @@ namespace DPA_Musicsheets
             result += musicSheet.Tracks[1].Bars[1].TimeSignature[1];
             result += "\n";
             result += "\\tempo 4=120\n";
-            
+
             // add notes
-            foreach(ADPBar bar in musicSheet.Tracks[1].Bars)
-            {
-                result += convertBar(bar);
-            }
+            result += convertMusicalSymbols(musicSheet.Tracks[1].Bars);
 
             result += "}";
 
             return result;
         }
 
-        private string convertBar(ADPBar bar)
+        private string convertMusicalSymbols(List<ADPBar> _bars)
         {
             string result = "";
-            foreach(ADPMusicalSymbol musicalSymbol in bar.MusicalSymbols)
+            ADPNote lastUsedNote = new ADPNote();
+            lastUsedNote.Key = "C";
+            lastUsedNote.Octave = 4;
+
+            foreach (ADPBar bar in _bars)
             {
-                if (musicalSymbol is ADPNote)
+                foreach (ADPMusicalSymbol musicalSymbol in bar.MusicalSymbols)
                 {
-                    result += ((ADPNote)musicalSymbol).Key.Substring(0,1).ToLower();
-                    if(((ADPNote)musicalSymbol).Alter == 1)
+                    if (musicalSymbol is ADPNote)
                     {
-                        // C#
-                        result += "is";
-                    } else if (((ADPNote)musicalSymbol).Alter == 2)
+                        result += ((ADPNote)musicalSymbol).Key.Substring(0, 1).ToLower();
+                        if (((ADPNote)musicalSymbol).Alter == 1)
+                        {
+                            // C#
+                            result += "is";
+                        }
+                        else if (((ADPNote)musicalSymbol).Alter == 2)
+                        {
+                            // Bb
+                            result += "es";
+                        }
+
+                        result += calculateOctave((ADPNote)musicalSymbol, lastUsedNote);
+                        result += musicalSymbol.Duration;
+
+                        for (int i = 0; i < ((ADPNote)musicalSymbol).AmountOfDots; i++){
+                            result += ".";
+                        }
+
+                        lastUsedNote = (ADPNote)musicalSymbol;
+                    }
+                    else
                     {
-                        // Bb
-                        result += "es";
+                        result += "r";
+                        result += musicalSymbol.Duration;
                     }
 
-                    result += calculateOctave();
-                } else
-                {
-                    result += "r";
+                    
+                    result += " ";
                 }
-
-                result += musicalSymbol.Duration;
-                result += " ";
+                result += "|\n";
             }
-            result += "|\n";
-
             return result;
         }
 
-        private string calculateOctave()
+        private string calculateOctave(ADPNote _newNote, ADPNote _oldNote)
         {
-            //TODO kijken voor octaaf hoogte 
-            return "";
-            //throw new NotImplementedException();
+            string result = "";
+            int nearestKeyOctave;
+
+            string[] keys = { "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B" };
+            int[] differences = new int[3];
+
+            int oldKeyIndex = Array.IndexOf(keys, _oldNote.Key.Substring(0,1), 7);
+
+            int newKeyIndex1 = Array.IndexOf(keys, _newNote.Key.Substring(0,1), 0);
+            int newKeyIndex2 = Array.IndexOf(keys, _newNote.Key.Substring(0, 1), 7);
+            int newKeyIndex3 = Array.IndexOf(keys, _newNote.Key.Substring(0, 1), 14);
+
+            differences[0] = Math.Abs(oldKeyIndex - newKeyIndex1);
+            differences[1] = Math.Abs(oldKeyIndex - newKeyIndex2);
+            differences[2] = Math.Abs(oldKeyIndex - newKeyIndex3);
+
+            differences.Min();
+            if(differences[0] == differences.Min())
+            {
+                // lower octave
+                nearestKeyOctave = _oldNote.Octave - 1;
+            } else if (differences[1] == differences.Min())
+            {
+                //middle octave
+                nearestKeyOctave = _oldNote.Octave;
+            } else
+            {
+                // higher octave
+                nearestKeyOctave = _oldNote.Octave + 1;
+            }
+
+            if(_newNote.Octave > nearestKeyOctave)
+            {
+                for(int i = 0; i < (_newNote.Octave - nearestKeyOctave); i++)
+                {
+                    result += "'";
+                }
+                return result;
+            } else if(_newNote.Octave < nearestKeyOctave)
+            {
+                for (int i = 0; i < (nearestKeyOctave - _newNote.Octave); i++)
+                {
+                    result += ",";
+                }
+                return result;
+            } else
+            {
+                return "";
+            }
         }
     }
 }
