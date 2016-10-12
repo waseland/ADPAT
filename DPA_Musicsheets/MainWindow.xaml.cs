@@ -79,14 +79,10 @@ namespace DPA_Musicsheets
 
             foreach (ADPBar tempBar in _myTrack.Bars)
             {
-                if(timeSignature == null)
-                {
-                    timeSignature[0] = 4;
-                    timeSignature[1] = 4;
-                }
-                if(tempBar.TimeSignature != timeSignature && tempBar.TimeSignature != null)
+                if (tempBar.TimeSignature != timeSignature)
                 {
                     timeSignature = tempBar.TimeSignature;
+                    //barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
                     barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)timeSignature[0], (uint)timeSignature[0]));
                 }
 
@@ -123,7 +119,6 @@ namespace DPA_Musicsheets
                     barLine = createNewBarline();
                     barCount = 0;
                 }
-                barLine.AddMusicalSymbol(new Barline());
             }
         }
 
@@ -247,9 +242,9 @@ namespace DPA_Musicsheets
             {
                 txt_MidiFilePath.Text = openFileDialog.FileName;
                 //FillTestPSAMViewer();
-                MidiConverter midiConverter = new MidiConverter();
-                MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
+                MidiADPConverter midiConverter = new MidiADPConverter();
+                ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                ShowADPTrack(sheet.Tracks[1]);
             }
         }
         

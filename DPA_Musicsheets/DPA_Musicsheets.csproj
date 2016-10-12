@@ -88,7 +88,7 @@
     <Compile Include="MidiPlayer.cs" />
     <Compile Include="MidiReader.cs" />
     <Compile Include="DoubleValueVariable.cs" />
-    <Compile Include="Midi\MidiConverter.cs" />
+    <Compile Include="Midi\MidiADPConverter.cs" />
     <Compile Include="Midi\MidiMusicalSymbolBuilder.cs" />
     <Compile Include="MyMusicSheet.cs" />
     <Compile Include="MyMusicalSymbol.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="MusicComponentModels\ADPTrack.cs" />
     <Compile Include="MyMusicalSymbolBuilder.cs" />
     <Compile Include="MyTrackBuilder.cs" />
+    <Compile Include="NoteToLilypondConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

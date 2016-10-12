@@ -41,6 +41,7 @@ namespace DPA_Musicsheets.Midi
             {
                 tempADPTrack = new ADPTrack();
                 ADPBar tempADPBar = new ADPBar();
+                tempADPBar.TimeSignature = timeSignature;
                 foreach (MidiEvent midiEvent in t.Iterator())
                 {
                     // musical symbol
@@ -54,7 +55,7 @@ namespace DPA_Musicsheets.Midi
                             if (tempADPMusicalSymbol != null)
                             {
                                 tempADPBar.MusicalSymbols.Add(tempADPMusicalSymbol);
-                                if(midiEvent.AbsoluteTicks % (wholeNoteLength / timeSignature[0]) == 0)
+                                if(midiEvent.AbsoluteTicks % (wholeNoteLength) == 0)
                                 {
                                     //last musical symbol in bar
                                     tempADPTrack.Bars.Add(tempADPBar);
