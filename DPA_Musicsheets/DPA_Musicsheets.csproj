@@ -68,6 +68,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Editor\CareTaker.cs" />
+    <Compile Include="Editor\Memento.cs" />
+    <Compile Include="Editor\Originator.cs" />
     <Compile Include="KeyCodeConvertor.cs" />
     <Compile Include="MidiConverter.cs" />
     <Compile Include="MidiTrack.cs" />
