@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Midi;
+﻿using DPA_Musicsheets.Editor;
+using DPA_Musicsheets.Midi;
 using DPA_Musicsheets.Models;
 using DPA_Musicsheets.MusicComponentModels;
 using Microsoft.Win32;
@@ -28,6 +29,9 @@ namespace DPA_Musicsheets
     public partial class MainWindow : Window
     {
         private MidiPlayer _player;
+        private int saveFiles;
+        private int currentState;
+
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
 
         // De OutputDevice is een midi device of het midikanaal van je PC.
@@ -41,8 +45,18 @@ namespace DPA_Musicsheets
             InitializeComponent();
             DataContext = MidiTracks;
             FillPSAMViewer();
+            initializeEditor();
             //FillPSAMViewer();
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
+        }
+
+        private void initializeEditor()
+        {
+            CareTaker careTaker = new CareTaker();
+            Originator originator = new Originator();
+
+            saveFiles = 0;
+            currentState = 0;
         }
 
         private IncipitViewerWPF createNewBarline()
@@ -233,6 +247,35 @@ namespace DPA_Musicsheets
 
             _player = new MidiPlayer(_outputDevice);
             _player.Play(txt_MidiFilePath.Text);
+        }
+
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+
+        private void btnRedo_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            Console.WriteLine("Redo ------------------------ Update ----------------------redo");
+            Console.WriteLine("-----------------undo-------- ------ ------undo----------------");
+            Console.WriteLine("----------------------------- Update --------------------------");
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            Console.WriteLine("----------------------------- Update --------------------------");
+
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // ... Get control that raised this event.
+            var textBox = sender as TextBox;
+            // ... Change Window Title.
+            this.Title = textBox.Text +
+            "[Length = " + textBox.Text.Length.ToString() + "]";
         }
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
