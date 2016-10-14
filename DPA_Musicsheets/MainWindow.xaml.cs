@@ -258,6 +258,7 @@ namespace DPA_Musicsheets
                     ADPSheet sheet = lilyConverter.readContent();
                     ShowADPTrack(sheet.Tracks[0]);
                     lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
+                    LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
 
                 }
             }
