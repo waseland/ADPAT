@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Midi;
+﻿using DPA_Musicsheets.Lily;
+using DPA_Musicsheets.Midi;
 using DPA_Musicsheets.Models;
 using DPA_Musicsheets.MusicComponentModels;
 using Microsoft.Win32;
@@ -237,16 +238,29 @@ namespace DPA_Musicsheets
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid" };
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid|Lily files (*.ly*)|*.ly*" };
             if (openFileDialog.ShowDialog() == true)
             {
                 txt_MidiFilePath.Text = openFileDialog.FileName;
                 //FillTestPSAMViewer();
-                MidiADPConverter midiConverter = new MidiADPConverter();
-                ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                ShowADPTrack(sheet.Tracks[1]);
-                NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
-                lilypondText.Text = ntlc.getLilypond(sheet);
+                string ext = System.IO.Path.GetExtension(openFileDialog.FileName);
+                if (ext == ".mid")
+                {
+                    MidiADPConverter midiConverter = new MidiADPConverter();
+                    ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                    ShowADPTrack(sheet.Tracks[1]);
+                    NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
+                    lilypondText.Text = ntlc.getLilypond(sheet);
+                }
+                else if (ext == ".ly")
+                {
+                    LilyADPConverter lilyConverter = new LilyADPConverter(txt_MidiFilePath.Text);
+                    ADPSheet sheet = lilyConverter.readContent();
+                    ShowADPTrack(sheet.Tracks[0]);
+                    lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
+                    LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
+
+                }
             }
         }
         
