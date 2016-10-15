@@ -15,7 +15,7 @@ namespace DPA_Musicsheets.Commands
             target = _target;
         }
 
-        public void execute()
+        public void Execute()
         {
             string newText = "\\tempo 4=120";
             target.AddTekstAtSelection(newText);

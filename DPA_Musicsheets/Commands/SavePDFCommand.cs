@@ -15,7 +15,7 @@ namespace DPA_Musicsheets.Commands
             this.target = _target;
         }
 
-        public void execute()
+        public void Execute()
         {
             target.SaveFileToPdf();
         }

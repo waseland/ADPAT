@@ -1,4 +1,5 @@
 ﻿using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.Controller;
 using DPA_Musicsheets.Editor;
 using DPA_Musicsheets.Midi;
 using DPA_Musicsheets.Models;
@@ -34,6 +35,7 @@ namespace DPA_Musicsheets
         private int currentMemento;
         private Originator originator;
         private CareTaker careTaker;
+        private ADPKeyHandler keyHandler;
 
 
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
@@ -46,6 +48,7 @@ namespace DPA_Musicsheets
         public MainWindow()
         {
             this.MidiTracks = new ObservableCollection<MidiTrack>();
+            keyHandler = new ADPKeyHandler(this);
             InitializeComponent();
             DataContext = MidiTracks;
             FillPSAMViewer();
@@ -431,6 +434,14 @@ namespace DPA_Musicsheets
         {
             int selectionStart = lilypondText.SelectionStart;
             lilypondText.SelectedText = _text;
+        }
+
+        private void OnKeyPressed(object sender, RoutedEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt || (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
+            {
+                keyHandler.OnKeyPressed();
+            }
         }
     }
 }

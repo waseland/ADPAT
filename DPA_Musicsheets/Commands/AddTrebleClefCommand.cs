@@ -15,7 +15,7 @@ namespace DPA_Musicsheets.Commands
             target = _target;
         }
 
-        public void execute()
+        public void Execute()
         {
             string newText = "\\clef treble";
             target.AddTekstAtSelection(newText);
