@@ -56,10 +56,17 @@ namespace DPA_Musicsheets
 
         private void initializeEditor()
         {
-            savedMementos = -1;
+            savedMementos = 0;
             currentMemento = 0;
             originator = new Originator();
             careTaker = new CareTaker();
+
+            originator.setState(lilypondText.Text);
+            careTaker.add(originator.storeInMemento());
+            savedMementos++;
+            currentMemento++;
+
+            ReEvaluateButtons();
         }
 
         private IncipitViewerWPF createNewBarline()
@@ -254,52 +261,40 @@ namespace DPA_Musicsheets
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("incoming: "+currentMemento);
             // TODO
             //Console.WriteLine("-----------------undo-------- ------ ------undo----------------");
             CareTaker c = careTaker;
-            if (currentMemento > 1)
+            if (currentMemento >= 1)
             {
-                Console.WriteLine("middle1: " + currentMemento);
                 //Console.WriteLine("from #"+(currentMemento+1)+" to #"+currentMemento+". going to previous version: "+careTaker.get(currentMemento - 1).getState());
                 lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
-                Console.WriteLine("middle2: " + currentMemento);
                 currentMemento--;
-                Console.WriteLine("middle3: " + currentMemento);
-            }
-            
-
-            if (savedMementos > 1)
-            {
-                btnUndo.IsEnabled = true;
-            }
-            else
-            {
-                btnUndo.IsEnabled = false;
             }
 
-            if (currentMemento < savedMementos)
-            {
-                btnRedo.IsEnabled = true;
-            }
-            else
-            {
-                btnRedo.IsEnabled = false;
-            }
-            Console.WriteLine("outgoing: "+currentMemento);
-            Console.WriteLine("------------------------------------");
+
+            ReEvaluateButtons();
         }
 
         private void btnRedo_Click(object sender, RoutedEventArgs e)
         {
             // TODO
-            Console.WriteLine("Redo ------------------------ ------ ----------------------redo");
             if (currentMemento < savedMementos)
             {
                 currentMemento++;
                 lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
             }
 
+            ReEvaluateButtons();
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            Console.WriteLine("----------------------------- Update --------------------------");
+        }
+
+        private void ReEvaluateButtons()
+        {
             if (savedMementos > 1)
             {
                 btnUndo.IsEnabled = true;
@@ -317,12 +312,6 @@ namespace DPA_Musicsheets
             {
                 btnRedo.IsEnabled = false;
             }
-        }
-
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO
-            Console.WriteLine("----------------------------- Update --------------------------");
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -333,23 +322,7 @@ namespace DPA_Musicsheets
             savedMementos++;
             currentMemento++;
 
-            if (savedMementos > 1)
-            {
-                btnUndo.IsEnabled = true;
-            }
-            else
-            {
-                btnUndo.IsEnabled = false;
-            }
-
-            if (currentMemento < savedMementos)
-            {
-                btnRedo.IsEnabled = true;
-            }
-            else
-            {
-                btnRedo.IsEnabled = false;
-            }
+            ReEvaluateButtons();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
