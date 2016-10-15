@@ -6,7 +6,8 @@
         xmlns:PSAMWPFControl="clr-namespace:PSAMWPFControlLibrary;assembly=PSAMWPFControlLibrary"
         xmlns:local="clr-namespace:DPA_Musicsheets"
         mc:Ignorable="d"
-        Title="MainWindow" Height="846.5" Width="1531.5" Closing="Window_Closing">
+        Title="MainWindow" Height="846.5" Width="1531.5" Closing="Window_Closing"
+        KeyDown="btnUpdate_Click">
     <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

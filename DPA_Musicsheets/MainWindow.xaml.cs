@@ -1,4 +1,5 @@
-﻿using DPA_Musicsheets.Editor;
+﻿using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.Editor;
 using DPA_Musicsheets.Midi;
 using DPA_Musicsheets.Models;
 using DPA_Musicsheets.MusicComponentModels;
@@ -26,7 +27,7 @@ using System.Windows.Shapes;
 
 namespace DPA_Musicsheets
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, CommandTarget
     {
         private MidiPlayer _player;
         private int savedMementos;
@@ -356,17 +357,7 @@ namespace DPA_Musicsheets
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid" };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                txt_MidiFilePath.Text = openFileDialog.FileName;
-                //FillTestPSAMViewer();
-                MidiADPConverter midiConverter = new MidiADPConverter();
-                ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                ShowADPTrack(sheet.Tracks[1]);
-                NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
-                lilypondText.Text = ntlc.getLilypond(sheet);
-            }
+            OpenFile();
         }
         
         private void btn_Stop_Click(object sender, RoutedEventArgs e)
@@ -410,6 +401,36 @@ namespace DPA_Musicsheets
             {
                 _player.Dispose();
             }
+        }
+
+        public void OpenFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                txt_MidiFilePath.Text = openFileDialog.FileName;
+                MidiADPConverter midiConverter = new MidiADPConverter();
+                ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                ShowADPTrack(sheet.Tracks[1]);
+                NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
+                lilypondText.Text = ntlc.getLilypond(sheet);
+            }
+        }
+
+        public void SaveFileToLilypond()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveFileToPdf()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTekstAtSelection(string _text)
+        {
+            int selectionStart = lilypondText.SelectionStart;
+            lilypondText.SelectedText = _text;
         }
     }
 }
