@@ -29,8 +29,11 @@ namespace DPA_Musicsheets
     public partial class MainWindow : Window
     {
         private MidiPlayer _player;
-        private int saveFiles;
-        private int currentState;
+        private int savedMementos;
+        private int currentMemento;
+        private Originator originator;
+        private CareTaker careTaker;
+
 
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
 
@@ -46,17 +49,17 @@ namespace DPA_Musicsheets
             DataContext = MidiTracks;
             FillPSAMViewer();
             initializeEditor();
+
             //FillPSAMViewer();
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
         }
 
         private void initializeEditor()
         {
-            CareTaker careTaker = new CareTaker();
-            Originator originator = new Originator();
-
-            saveFiles = 0;
-            currentState = 0;
+            savedMementos = -1;
+            currentMemento = 0;
+            originator = new Originator();
+            careTaker = new CareTaker();
         }
 
         private IncipitViewerWPF createNewBarline()
@@ -251,31 +254,131 @@ namespace DPA_Musicsheets
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("incoming: "+currentMemento);
             // TODO
+            //Console.WriteLine("-----------------undo-------- ------ ------undo----------------");
+            CareTaker c = careTaker;
+            if (currentMemento > 1)
+            {
+                Console.WriteLine("middle1: " + currentMemento);
+                //Console.WriteLine("from #"+(currentMemento+1)+" to #"+currentMemento+". going to previous version: "+careTaker.get(currentMemento - 1).getState());
+                lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
+                Console.WriteLine("middle2: " + currentMemento);
+                currentMemento--;
+                Console.WriteLine("middle3: " + currentMemento);
+            }
+            
+
+            if (savedMementos > 1)
+            {
+                btnUndo.IsEnabled = true;
+            }
+            else
+            {
+                btnUndo.IsEnabled = false;
+            }
+
+            if (currentMemento < savedMementos)
+            {
+                btnRedo.IsEnabled = true;
+            }
+            else
+            {
+                btnRedo.IsEnabled = false;
+            }
+            Console.WriteLine("outgoing: "+currentMemento);
+            Console.WriteLine("------------------------------------");
         }
 
         private void btnRedo_Click(object sender, RoutedEventArgs e)
         {
             // TODO
-            Console.WriteLine("Redo ------------------------ Update ----------------------redo");
-            Console.WriteLine("-----------------undo-------- ------ ------undo----------------");
-            Console.WriteLine("----------------------------- Update --------------------------");
+            Console.WriteLine("Redo ------------------------ ------ ----------------------redo");
+            if (currentMemento < savedMementos)
+            {
+                currentMemento++;
+                lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
+            }
+
+            if (savedMementos > 1)
+            {
+                btnUndo.IsEnabled = true;
+            }
+            else
+            {
+                btnUndo.IsEnabled = false;
+            }
+
+            if (currentMemento < savedMementos)
+            {
+                btnRedo.IsEnabled = true;
+            }
+            else
+            {
+                btnRedo.IsEnabled = false;
+            }
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             // TODO
             Console.WriteLine("----------------------------- Update --------------------------");
+        }
 
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            // ... Get control that raised this event.
+            originator.setState(lilypondText.Text);
+            careTaker.add(originator.storeInMemento());
+            savedMementos++;
+            currentMemento++;
+
+            if (savedMementos > 1)
+            {
+                btnUndo.IsEnabled = true;
+            }
+            else
+            {
+                btnUndo.IsEnabled = false;
+            }
+
+            if (currentMemento < savedMementos)
+            {
+                btnRedo.IsEnabled = true;
+            }
+            else
+            {
+                btnRedo.IsEnabled = false;
+            }
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             // ... Get control that raised this event.
-            var textBox = sender as TextBox;
-            // ... Change Window Title.
-            this.Title = textBox.Text +
-            "[Length = " + textBox.Text.Length.ToString() + "]";
+            //Console.WriteLine("hier...");
+            //TextBox textBox = sender as TextBox;
+            //originator.setState(textBox.Text);
+            //careTaker.add(originator.storeInMemento());
+            //savedMementos++;
+            //currentMemento++;
+
+            //if (savedMementos > 1)
+            //{
+            //    btnUndo.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    btnUndo.IsEnabled = false;
+            //}
+
+            //if (currentMemento < savedMementos)
+            //{
+            //    btnRedo.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    btnRedo.IsEnabled = false;
+            //}
         }
 
         private void btnOpen_Click(object sender, RoutedEventArgs e)

@@ -10,9 +10,9 @@ namespace DPA_Musicsheets.Editor
     {
         private string state;
 
-        public void setState(Memento memento)
+        public void setState(string newState)
         {
-            this.state = memento.getState();
+            this.state = newState;
         }
 
         public string getState()

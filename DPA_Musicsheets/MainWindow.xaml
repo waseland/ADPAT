@@ -67,9 +67,10 @@
             </ScrollViewer>
         </Grid>
         <Grid Grid.Column="2">
-            <Button Grid.Row="0" x:Name="btnUndo" Content="Undo" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="75" Click="btnUndo_Click"/>
-            <Button Grid.Row="0" x:Name="btnRedo" Content="Redo" HorizontalAlignment="Left" Margin="104,11,0,0" VerticalAlignment="Top" Width="74" Click="btnRedo_Click"/>
-            <Button Grid.Row="0" x:Name="btnUpdate" Content="Update to Sheet" HorizontalAlignment="Left" Margin="104,11,0,0" VerticalAlignment="Top" Width="74" Click="btnUpdate_Click"/>
+            <Button Grid.Row="0" x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="10,11,0,0" VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
+            <Button Grid.Row="0" IsEnabled="false" x:Name="btnUndo" Content="Undo" HorizontalAlignment="Left" Margin="102,11,0,0" VerticalAlignment="Top" Width="75" Click="btnUndo_Click"/>
+            <Button Grid.Row="0" IsEnabled="false" x:Name="btnRedo" Content="Redo" HorizontalAlignment="Left" Margin="196,11,0,0" VerticalAlignment="Top" Width="74" Click="btnRedo_Click"/>
+            <Button Grid.Row="0" IsEnabled="false" x:Name="btnUpdate" Content="Update to Sheet" HorizontalAlignment="Left" Margin="284,11,0,0" VerticalAlignment="Top" Width="99" Click="btnUpdate_Click"/>
             <TextBox x:Name="lilypondText" Height="760" AcceptsReturn="True" Margin="10,50,-10,10" TextChanged="TextBox_TextChanged">
 
             </TextBox>
