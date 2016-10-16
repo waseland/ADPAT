@@ -95,6 +95,8 @@
     <Compile Include="Editor\Memento.cs" />
     <Compile Include="Editor\Originator.cs" />
     <Compile Include="KeyCodeConvertor.cs" />
+    <Compile Include="Lily\LilyADPConverter.cs" />
+    <Compile Include="Lily\LilypondToPDF.cs" />
     <Compile Include="MidiConverter.cs" />
     <Compile Include="MidiTrack.cs" />
     <Page Include="MainWindow.xaml">
