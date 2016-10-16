@@ -42,6 +42,24 @@ namespace DPA_Musicsheets.Lily
             return ConvertContent(lilypondFileContents);
         }
 
+        public ADPSheet ConvertText(string text)
+        {
+            ADPNote latestNote = new ADPNote();
+            latestNote.Octave = 4;
+            latestNote.Key = "C";
+            int[] timeSignature = new int[2];
+
+            string[] lilypondFileContents = text.Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            for (int i = 0; i < lilypondFileContents.Length; i++)
+            {
+                lilypondFileContents[i] = lilypondFileContents[i].Replace("\r\n", string.Empty);
+                lilypondFileContents[i] = lilypondFileContents[i].Replace("\n", string.Empty);
+            }
+
+            return ConvertContent(lilypondFileContents);
+        }
+
+
         public ADPSheet ConvertContent(string[] _content)
         {
             int[] timeSignature = new int[2];
@@ -157,23 +175,29 @@ namespace DPA_Musicsheets.Lily
                         {
                             //add alternative note
                             string[] inputStrings = convertToInputStrings(_content[i], latestNote);
-                            tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
-                            if(tempMusicalSymbol is ADPNote)
+                            if (inputStrings != null)
                             {
-                                latestNote = (ADPNote)tempMusicalSymbol;
+                                tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
+                                if (tempMusicalSymbol is ADPNote)
+                                {
+                                    latestNote = (ADPNote)tempMusicalSymbol;
+                                }
+                                alternatives[alternativeNr].Add(tempMusicalSymbol);
                             }
-                            alternatives[alternativeNr].Add(tempMusicalSymbol);
                         }
                         else
                         {
                             //add normal note
                             string[] inputStrings = convertToInputStrings(_content[i], latestNote);
-                            tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
-                            if (tempMusicalSymbol is ADPNote)
+                            if (inputStrings != null)
                             {
-                                latestNote = (ADPNote)tempMusicalSymbol;
+                                tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
+                                if (tempMusicalSymbol is ADPNote)
+                                {
+                                    latestNote = (ADPNote)tempMusicalSymbol;
+                                }
+                                notes.Add(tempMusicalSymbol);
                             }
-                            notes.Add(tempMusicalSymbol);
                         }
                         break;
                 }
@@ -187,7 +211,12 @@ namespace DPA_Musicsheets.Lily
             string[] resultInputStrings = new string[6];
 
             string key = musicalSymbolInfo.Substring(0, 1);
+            
             string durationValue = Regex.Match(musicalSymbolInfo, @"\d+").Value;
+            if(durationValue == "")
+            {
+                return null;
+            }
             int duration = Int32.Parse(durationValue);
 
             if (key.Equals("r"))

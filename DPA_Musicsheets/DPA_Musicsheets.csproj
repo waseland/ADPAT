@@ -34,17 +34,37 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PSAMControlLibrary, Version=2.1.0.2, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PSAMControlLibrary.dll</HintPath>
+      <HintPath>D:\Downloads\DPA_Startup_Musicsheets-master\DPA_Startup_Musicsheets-master\packages\PSAMControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="PSAMWPFControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PSAMWPFControlLibrary.dll</HintPath>
+      <HintPath>D:\Downloads\DPA_Startup_Musicsheets-master\DPA_Startup_Musicsheets-master\packages\PSAMWPFControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Sanford.Multimedia.Midi, Version=6.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sanford.Multimedia.Midi.6.1.2\lib\net20\Sanford.Multimedia.Midi.dll</HintPath>
+      <HintPath>D:\Downloads\DPA_Startup_Musicsheets-master\DPA_Startup_Musicsheets-master\packages\Sanford.Multimedia.Midi.6.1.2\lib\net20\Sanford.Multimedia.Midi.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -82,6 +102,7 @@
     <Compile Include="Commands\SaveLilypondCommand.cs" />
     <Compile Include="Commands\SavePdfCommand.cs" />
     <Compile Include="Controllers\ADPKeyHandler.cs" />
+    <Compile Include="Controllers\FileExporter.cs" />
     <Compile Include="Controllers\KeyChains\ALT_B_KeyChain.cs" />
     <Compile Include="Controllers\KeyChains\ALT_C_KeyChain.cs" />
     <Compile Include="Controllers\KeyChains\ALT_S_KeyChain.cs" />
@@ -96,6 +117,7 @@
     <Compile Include="Editor\CareTaker.cs" />
     <Compile Include="Editor\Memento.cs" />
     <Compile Include="Editor\Originator.cs" />
+    <Compile Include="Editor\Updater.cs" />
     <Compile Include="Lily\LilyADPConverter.cs" />
     <Compile Include="Lily\LilypondToPDF.cs" />
     <Compile Include="Lily\SaveAsLilypond.cs" />
