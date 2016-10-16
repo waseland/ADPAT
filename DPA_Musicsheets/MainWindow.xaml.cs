@@ -52,7 +52,7 @@ namespace DPA_Musicsheets
             keyHandler = new ADPKeyHandler(this);
             InitializeComponent();
             DataContext = MidiTracks;
-            FillPSAMViewer();
+            //FillPSAMViewer();
             initializeEditor();
 
             //FillPSAMViewer();
@@ -429,20 +429,20 @@ namespace DPA_Musicsheets
                     ADPSheet sheet = lilyConverter.readContent();
                     ShowADPTrack(sheet.Tracks[0]);
                     lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
-                    LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
-
+                    //LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
+                    //SaveFileToPdf();
                 }
             }
         }
 
         public void SaveFileToLilypond()
         {
-            throw new NotImplementedException();
+            SaveAsLilypond saly = new SaveAsLilypond(lilypondText.Text);
         }
 
         public void SaveFileToPdf()
         {
-            throw new NotImplementedException();
+            LilypondToPDF l2pdf = new LilypondToPDF(lilypondText.Text);
         }
 
         public void AddTekstAtSelection(string _text)
