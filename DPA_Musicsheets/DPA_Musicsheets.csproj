@@ -117,6 +117,7 @@
     <Compile Include="Editor\CareTaker.cs" />
     <Compile Include="Editor\Memento.cs" />
     <Compile Include="Editor\Originator.cs" />
+    <Compile Include="Editor\Updater.cs" />
     <Compile Include="Lily\LilyADPConverter.cs" />
     <Compile Include="Lily\LilypondMusicalSymbolBuilder.cs" />
     <Compile Include="Lily\LilypondToPDF.cs" />
