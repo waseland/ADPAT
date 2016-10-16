@@ -17,8 +17,8 @@ namespace DPA_Musicsheets.Commands
 
         public void Execute()
         {
-            //TODO
-            throw new NotImplementedException();
+            target.AddBarlinesToEditor();
         }
+
     }
 }

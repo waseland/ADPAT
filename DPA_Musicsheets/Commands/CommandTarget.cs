@@ -13,5 +13,6 @@ namespace DPA_Musicsheets.Commands
         void SaveFileToPdf();
         void AddTekstAtSelection(string _text);
         void SetNewState();
+        void AddBarlinesToEditor();
     }
 }

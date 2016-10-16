@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -213,20 +214,17 @@ namespace DPA_Musicsheets
                     lilypondText.Text = ntlc.getLilypond(sheet);
                     SetNewState();
                 }
-                //LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
             }
         }
 
         public void SaveFileToLilypond()
         {
-            //TODO
-            throw new NotImplementedException();
+            SaveAsLilypond saveAsLilypond = new SaveAsLilypond(lilypondText.Text);
         }
 
         public void SaveFileToPdf()
         {
-            //TODO
-            throw new NotImplementedException();
+            LilypondToPDF l2pdf = new LilypondToPDF(lilypondText.Text);
         }
 
         public void AddTekstAtSelection(string _text)
@@ -257,6 +255,94 @@ namespace DPA_Musicsheets
             currentMemento++;
 
             ReEvaluateButtons();
+        }
+
+        public void AddBarlinesToEditor() //Werkt op het moment alleen met 4/4 maatsoort
+        {
+            //int[] timeSignature = new int[2];
+
+            //string[] lilyPondContents = lilypondText.Text.Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToArray(); // get time signature (skip this, it only works for 4/4)
+            //for (int i = 0; i < lilyPondContents.Length; i++)
+            //{
+            //    lilyPondContents[i] = lilyPondContents[i].Replace("\r\n", string.Empty);
+            //    lilyPondContents[i] = lilyPondContents[i].Replace("\n", string.Empty);
+            //    if (lilyPondContents[i].Contains("time"))
+            //    {
+            //        string str = lilyPondContents[i + 1];
+            //        timeSignature[0] = (int)Char.GetNumericValue(str[0]);
+            //        timeSignature[1] = (int)Char.GetNumericValue(str[2]);
+
+
+            //    }
+            //}
+
+            int e = lilypondText.Text.Length;
+            string selectedpart = lilypondText.SelectedText;
+            double counter = 0;
+            string[] notes = selectedpart.Split(' ');
+            string result = "";
+            if (selectedpart == "" || selectedpart.Contains("{") || selectedpart.Contains("}") || selectedpart.Contains("\\"))
+            {
+                return;
+            }
+
+            for (int x = 0; x < notes.Length; x++)
+            {
+                string temp = Regex.Match(notes[x], @"\d+").Value;
+                if (temp == "")
+                {
+                    //stop
+                }
+                else
+                {
+                    int d = Int32.Parse(temp);
+                    double y = 0;
+                    result += notes[x] + " ";
+
+                    switch (d) //works for 4/4
+                    {
+                        case 1:
+                            y += 4;
+                            break;
+                        case 2:
+                            y += 2;
+                            break;
+                        case 4:
+                            y += 1;
+                            break;
+                        case 8:
+                            y += 0.5;
+                            break;
+                        case 16:
+                            y += 0.25;
+                            break;
+                    }
+                    if (notes[x].Contains("."))
+                    {
+                        y = y + (y / 2);
+                    };
+
+                    counter += y;
+                    if (counter >= 4) //only works for 4/4
+                    {
+                        if (notes[x + 1].Contains("|\n"))
+                        {
+                            counter = 0;
+                        }
+                        else
+                        {
+                            result += "| ";
+                            counter = 0;
+                        }
+
+
+                    }
+                }
+
+            }
+
+            string s = lilypondText.Text.Replace(selectedpart, result);
+            lilypondText.Text = s;
         }
     }
 }

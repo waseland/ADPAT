@@ -11,8 +11,11 @@ namespace DPA_Musicsheets.Lily
 {
     class LilypondToPDF
     {
-        public LilypondToPDF(string file)
+        public LilypondToPDF(string text)
         {
+            string file = @"C:\temp\WriteText.ly";
+            System.IO.File.WriteAllText(@file, text);
+
             string name = System.IO.Path.GetFileName(file);
             string location = System.IO.Path.GetDirectoryName(file);
             string temp = System.IO.Path.GetFileNameWithoutExtension(file);
@@ -27,8 +30,6 @@ namespace DPA_Musicsheets.Lily
             saveFileDialog.ShowDialog();
             if (saveFileDialog.SafeFileName != "")
             {
-
-            
                 string targetFolderSave = Path.GetFullPath(saveFileDialog.FileName);
 
                 Process process = new Process
