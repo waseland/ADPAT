@@ -115,6 +115,7 @@ namespace DPA_Musicsheets
             {
                 currentMemento--;
                 lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento));
+                keyHandler.restartThread();
             }
 
 
@@ -127,6 +128,7 @@ namespace DPA_Musicsheets
             {
                 currentMemento++;
                 lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
+                keyHandler.restartThread();
             }
 
             ReEvaluateButtons();
