@@ -15,14 +15,14 @@ namespace DPA_Musicsheets
             result += "\\relative c' {\n";
             result += "\\clef treble\n";
             result += "\\time ";
-            result += musicSheet.Tracks[1].Bars[1].TimeSignature[0];
+            result += musicSheet.getTrack().Bars[1].TimeSignature[0];
             result += "/";
-            result += musicSheet.Tracks[1].Bars[1].TimeSignature[1];
+            result += musicSheet.getTrack().Bars[1].TimeSignature[1];
             result += "\n";
             result += "\\tempo 4=120\n";
 
             // add notes
-            result += convertMusicalSymbols(musicSheet.Tracks[1].Bars);
+            result += convertMusicalSymbols(musicSheet.getTrack().Bars);
 
             result += "}";
 

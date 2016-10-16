@@ -22,12 +22,18 @@ namespace DPA_Musicsheets.Controller
 
         public void OnKeyPressed()
         {
-            foreach(Key k in getPressedKeys())
+            if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt || (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
             {
-                Console.Write(k + " - " );
+                foreach (Key k in getPressedKeys())
+                {
+                    Console.Write(k + " - ");
+                }
+                Console.WriteLine("____________________________________");
+                firstKeyChain.Handle(getPressedKeys());
+            } else
+            {
+                target.SetNewState();
             }
-            Console.WriteLine("____________________________________");
-            firstKeyChain.Handle(getPressedKeys());
         }
 
         private List<Key> getPressedKeys()

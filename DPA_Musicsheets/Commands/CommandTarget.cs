@@ -12,6 +12,7 @@ namespace DPA_Musicsheets.Commands
         void SaveFileToLilypond();
         void SaveFileToPdf();
         void AddTekstAtSelection(string _text);
+        void SetNewState();
         void AddBarlinesToEditor();
     }
 }
