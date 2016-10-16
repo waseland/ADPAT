@@ -97,7 +97,6 @@
     <Compile Include="Editor\Memento.cs" />
     <Compile Include="Editor\Originator.cs" />
     <Compile Include="Lily\LilyADPConverter.cs" />
-    <Compile Include="Lily\LilypondMusicalSymbolBuilder.cs" />
     <Compile Include="Lily\LilypondToPDF.cs" />
     <Compile Include="Lily\SaveAsLilypond.cs" />
     <Compile Include="MidiTrack.cs" />
@@ -118,9 +117,9 @@
     <Compile Include="MidiPlayer.cs" />
     <Compile Include="MidiReader.cs" />
     <Compile Include="Midi\MidiADPConverter.cs" />
-    <Compile Include="Midi\MidiMusicalSymbolBuilder.cs" />
     <Compile Include="MusicComponentModels\ADPBar.cs" />
     <Compile Include="MusicComponentModels\ADPMusicalSymbol.cs" />
+    <Compile Include="MusicComponentModels\ADPMusicalSymbolFactory.cs" />
     <Compile Include="MusicComponentModels\ADPNote.cs" />
     <Compile Include="MusicComponentModels\ADPRest.cs" />
     <Compile Include="MusicComponentModels\ADPSheet.cs" />

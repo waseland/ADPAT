@@ -10,7 +10,7 @@ namespace DPA_Musicsheets.Lily
 {
     public class LilyADPConverter : ADPFileConverter
     {
-        private LilypondMusicalSymbolBuilder lilypondMusicalSymbolBuilder;
+        private ADPMusicalSymbolFactory musicalSymbolFactory;
 
         private enum contentType 
         {
@@ -21,7 +21,7 @@ namespace DPA_Musicsheets.Lily
 
         public LilyADPConverter()
         {
-            lilypondMusicalSymbolBuilder = new LilypondMusicalSymbolBuilder();
+            musicalSymbolFactory = new ADPMusicalSymbolFactory();
             ext = ".ly";
         }
 
@@ -156,17 +156,19 @@ namespace DPA_Musicsheets.Lily
                         if (type == contentType.alternative)
                         {
                             //add alternative note
-                            tempMusicalSymbol = lilypondMusicalSymbolBuilder.BuildMusicalSymbol(_content[i], latestNote);
+                            string[] inputStrings = convertToInputStrings(_content[i], latestNote);
+                            tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
                             if(tempMusicalSymbol is ADPNote)
                             {
                                 latestNote = (ADPNote)tempMusicalSymbol;
                             }
-                            alternatives[alternativeNr].Add(lilypondMusicalSymbolBuilder.BuildMusicalSymbol(_content[i], latestNote));
+                            alternatives[alternativeNr].Add(tempMusicalSymbol);
                         }
                         else
                         {
                             //add normal note
-                            tempMusicalSymbol = lilypondMusicalSymbolBuilder.BuildMusicalSymbol(_content[i], latestNote);
+                            string[] inputStrings = convertToInputStrings(_content[i], latestNote);
+                            tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
                             if (tempMusicalSymbol is ADPNote)
                             {
                                 latestNote = (ADPNote)tempMusicalSymbol;
@@ -178,6 +180,104 @@ namespace DPA_Musicsheets.Lily
             }
             adps.Tracks.Add(adpt); //Only need to add one track
             return adps;
+        }
+
+        private string[] convertToInputStrings(string musicalSymbolInfo, ADPNote latestNote)
+        {
+            string[] resultInputStrings = new string[6];
+
+            string key = musicalSymbolInfo.Substring(0, 1);
+            string durationValue = Regex.Match(musicalSymbolInfo, @"\d+").Value;
+            int duration = Int32.Parse(durationValue);
+
+            if (key.Equals("r"))
+            {
+                resultInputStrings[0] = "rest";
+                resultInputStrings[1] = "" + duration;
+            } else
+            {
+                int amountOfDots = 0;
+
+                while (musicalSymbolInfo.Contains("."))
+                {
+                    int x = musicalSymbolInfo.IndexOf(".");
+                    musicalSymbolInfo = musicalSymbolInfo.Remove(x, 1);
+                    amountOfDots++;
+                }
+
+                resultInputStrings[0] = "note";
+                resultInputStrings[1] = "" + duration;
+                resultInputStrings[2] = "" + amountOfDots;
+                resultInputStrings[3] = key.ToUpper();
+
+                if (musicalSymbolInfo.Contains("is"))
+                {
+                    resultInputStrings[4] = "" + 1;
+                }
+                else if (musicalSymbolInfo.Contains("es"))
+                {
+                    resultInputStrings[4] = "" + 2;
+                }
+                else
+                {
+                    resultInputStrings[4] = "" + 0;
+                }
+
+                resultInputStrings[5] = "" + calculateOctave(musicalSymbolInfo, latestNote);
+            }
+
+            return resultInputStrings;
+        }
+
+        private int calculateOctave(string noteInfo, ADPNote latestNote)
+        {
+            string newKey = noteInfo.Substring(0, 1).ToUpper();
+            int resultOctave;
+
+            string[] keys = { "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B" };
+
+            int[] differences = new int[3];
+
+            int latestNoteIndex = Array.IndexOf(keys, latestNote.Key.Substring(0, 1), 7);
+
+            int newKeyIndex1 = Array.IndexOf(keys, newKey, 0);
+            int newKeyIndex2 = Array.IndexOf(keys, newKey, 7);
+            int newKeyIndex3 = Array.IndexOf(keys, newKey, 14);
+
+            differences[0] = Math.Abs(latestNoteIndex - newKeyIndex1);
+            differences[1] = Math.Abs(latestNoteIndex - newKeyIndex2);
+            differences[2] = Math.Abs(latestNoteIndex - newKeyIndex3);
+
+            differences.Min();
+            if (differences[0] == differences.Min())
+            {
+                // lower octave
+                resultOctave = latestNote.Octave - 1;
+            }
+            else if (differences[1] == differences.Min())
+            {
+                //middle octave
+                resultOctave = latestNote.Octave;
+            }
+            else
+            {
+                // higher octave
+                resultOctave = latestNote.Octave + 1;
+            }
+
+            while (noteInfo.Contains("'"))
+            {
+                resultOctave++;
+                noteInfo = noteInfo.Remove(noteInfo.IndexOf("'"), 1);
+            }
+
+            while (noteInfo.Contains(","))
+            {
+                resultOctave--;
+                noteInfo = noteInfo.Remove(noteInfo.IndexOf(","), 1);
+            }
+
+            return resultOctave;
         }
     }
 }
