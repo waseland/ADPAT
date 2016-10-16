@@ -12,14 +12,14 @@ namespace DPA_Musicsheets
         public string getLilypond(ADPSheet musicSheet)
         {
             string result = "";
-            result += "\\relative c' {\n";
-            result += "\\clef treble\n";
+            result += "\\relative c' { \n";
+            result += "\\clef treble \n";
             result += "\\time ";
             result += musicSheet.getTrack().Bars[1].TimeSignature[0];
             result += "/";
             result += musicSheet.getTrack().Bars[1].TimeSignature[1];
-            result += "\n";
-            result += "\\tempo 4=120\n";
+            result += " \n";
+            result += "\\tempo 4=120 \n";
 
             // add notes
             result += convertMusicalSymbols(musicSheet.getTrack().Bars);
@@ -72,7 +72,7 @@ namespace DPA_Musicsheets
                     
                     result += " ";
                 }
-                result += "|\n";
+                result += "| \n";
             }
             return result;
         }

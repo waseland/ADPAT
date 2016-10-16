@@ -16,6 +16,10 @@ namespace DPA_Musicsheets.Lily
 
             string key = musicalSymbolInfo.Substring(0, 1);
             string durationValue = Regex.Match(musicalSymbolInfo, @"\d+").Value;
+            if(durationValue == "")
+            {
+                return null;
+            }
             int duration = Int32.Parse(durationValue);
 
             if (key == "r")

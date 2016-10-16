@@ -14,5 +14,7 @@ namespace DPA_Musicsheets.Commands
         void AddTekstAtSelection(string _text);
         void SetNewState();
         void AddBarlinesToEditor();
+        string UpdateBarlinesFromLilypond();
+        
     }
 }

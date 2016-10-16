@@ -1,0 +1,5 @@
+C:\Users\j-elm\Source\Repos\ADPAT5\DPA_Musicsheets\bin\x64\Debug\DPA_Musicsheets.exe.config
+C:\Users\j-elm\Source\Repos\ADPAT5\DPA_Musicsheets\obj\x64\Debug\MainWindow.g.cs
+C:\Users\j-elm\Source\Repos\ADPAT5\DPA_Musicsheets\obj\x64\Debug\App.g.cs
+C:\Users\j-elm\Source\Repos\ADPAT5\DPA_Musicsheets\obj\x64\Debug\DPA_Musicsheets_MarkupCompile.cache
+C:\Users\j-elm\Source\Repos\ADPAT5\DPA_Musicsheets\obj\x64\Debug\DPA_Musicsheets_MarkupCompile.lref

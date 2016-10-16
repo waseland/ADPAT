@@ -42,6 +42,24 @@ namespace DPA_Musicsheets.Lily
             return ConvertContent(lilypondFileContents);
         }
 
+        public ADPSheet ConvertText(string text)
+        {
+            ADPNote latestNote = new ADPNote();
+            latestNote.Octave = 4;
+            latestNote.Key = "C";
+            int[] timeSignature = new int[2];
+
+            string[] lilypondFileContents = text.Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            for (int i = 0; i < lilypondFileContents.Length; i++)
+            {
+                lilypondFileContents[i] = lilypondFileContents[i].Replace("\r\n", string.Empty);
+                lilypondFileContents[i] = lilypondFileContents[i].Replace("\n", string.Empty);
+            }
+
+            return ConvertContent(lilypondFileContents);
+        }
+
+
         public ADPSheet ConvertContent(string[] _content)
         {
             int[] timeSignature = new int[2];

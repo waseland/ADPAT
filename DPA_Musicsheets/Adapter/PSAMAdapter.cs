@@ -73,22 +73,26 @@ namespace DPA_Musicsheets.Adapter
                 // add symbols
                 foreach (ADPMusicalSymbol tempSymbol in tempBar.MusicalSymbols)
                 {
-                    if (tempSymbol.GetType() == typeof(ADPRest))
+                    if (tempSymbol != null)
                     {
-                        //rest
-                        barLine.AddMusicalSymbol(new Rest(ConvertDuration(tempSymbol.Duration)));
-                    }
-                    else
-                    {
-                        ADPNote tempNote = (ADPNote)tempSymbol;
-                        //note
-                        if (tempNote.AmountOfDots > 0)
+                      
+                        if (tempSymbol.GetType() == typeof(ADPRest))
                         {
-                            barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = tempNote.AmountOfDots });
+                            //rest
+                            barLine.AddMusicalSymbol(new Rest(ConvertDuration(tempSymbol.Duration)));
                         }
                         else
                         {
-                            barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
+                            ADPNote tempNote = (ADPNote)tempSymbol;
+                            //note
+                            if (tempNote.AmountOfDots > 0)
+                            {
+                                barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = tempNote.AmountOfDots });
+                            }
+                            else
+                            {
+                                barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
+                            }
                         }
                     }
                 }
