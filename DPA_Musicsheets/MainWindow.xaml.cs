@@ -1,3 +1,6 @@
+﻿using DPA_Musicsheets.Commands;
+using DPA_Musicsheets.Controller;
+using DPA_Musicsheets.Editor;
 ﻿using DPA_Musicsheets.Lily;
 using DPA_Musicsheets.Midi;
 using DPA_Musicsheets.Models;
@@ -26,9 +29,16 @@ using System.Windows.Shapes;
 
 namespace DPA_Musicsheets
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, CommandTarget
     {
         private MidiPlayer _player;
+        private int savedMementos;
+        private int currentMemento;
+        private Originator originator;
+        private CareTaker careTaker;
+        private ADPKeyHandler keyHandler;
+
+
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
 
         // De OutputDevice is een midi device of het midikanaal van je PC.
@@ -39,11 +49,29 @@ namespace DPA_Musicsheets
         public MainWindow()
         {
             this.MidiTracks = new ObservableCollection<MidiTrack>();
+            keyHandler = new ADPKeyHandler(this);
             InitializeComponent();
             DataContext = MidiTracks;
             FillPSAMViewer();
+            initializeEditor();
+
             //FillPSAMViewer();
             //notenbalk.LoadFromXmlFile("Resources/example.xml");
+        }
+
+        private void initializeEditor()
+        {
+            savedMementos = 0;
+            currentMemento = 0;
+            originator = new Originator();
+            careTaker = new CareTaker();
+
+            originator.setState(lilypondText.Text);
+            careTaker.add(originator.storeInMemento());
+            savedMementos++;
+            currentMemento++;
+
+            ReEvaluateButtons();
         }
 
         private IncipitViewerWPF createNewBarline()
@@ -236,32 +264,104 @@ namespace DPA_Musicsheets
             _player.Play(txt_MidiFilePath.Text);
         }
 
+        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            //Console.WriteLine("-----------------undo-------- ------ ------undo----------------");
+            CareTaker c = careTaker;
+            if (currentMemento >= 1)
+            {
+                //Console.WriteLine("from #"+(currentMemento+1)+" to #"+currentMemento+". going to previous version: "+careTaker.get(currentMemento - 1).getState());
+                lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
+                currentMemento--;
+            }
+
+
+            ReEvaluateButtons();
+        }
+
+        private void btnRedo_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            if (currentMemento < savedMementos)
+            {
+                currentMemento++;
+                lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
+            }
+
+            ReEvaluateButtons();
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            // TODO
+            Console.WriteLine("----------------------------- Update --------------------------");
+        }
+
+        private void ReEvaluateButtons()
+        {
+            if (savedMementos > 1)
+            {
+                btnUndo.IsEnabled = true;
+            }
+            else
+            {
+                btnUndo.IsEnabled = false;
+            }
+
+            if (currentMemento < savedMementos)
+            {
+                btnRedo.IsEnabled = true;
+            }
+            else
+            {
+                btnRedo.IsEnabled = false;
+            }
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            // ... Get control that raised this event.
+            originator.setState(lilypondText.Text);
+            careTaker.add(originator.storeInMemento());
+            savedMementos++;
+            currentMemento++;
+
+            ReEvaluateButtons();
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // ... Get control that raised this event.
+            //Console.WriteLine("hier...");
+            //TextBox textBox = sender as TextBox;
+            //originator.setState(textBox.Text);
+            //careTaker.add(originator.storeInMemento());
+            //savedMementos++;
+            //currentMemento++;
+
+            //if (savedMementos > 1)
+            //{
+            //    btnUndo.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    btnUndo.IsEnabled = false;
+            //}
+
+            //if (currentMemento < savedMementos)
+            //{
+            //    btnRedo.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    btnRedo.IsEnabled = false;
+            //}
+        }
+
         private void btnOpen_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid|Lily files (*.ly*)|*.ly*" };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                txt_MidiFilePath.Text = openFileDialog.FileName;
-                //FillTestPSAMViewer();
-                string ext = System.IO.Path.GetExtension(openFileDialog.FileName);
-                if (ext == ".mid")
-                {
-                    MidiADPConverter midiConverter = new MidiADPConverter();
-                    ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                    ShowADPTrack(sheet.Tracks[1]);
-                    NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
-                    lilypondText.Text = ntlc.getLilypond(sheet);
-                }
-                else if (ext == ".ly")
-                {
-                    LilyADPConverter lilyConverter = new LilyADPConverter(txt_MidiFilePath.Text);
-                    ADPSheet sheet = lilyConverter.readContent();
-                    ShowADPTrack(sheet.Tracks[0]);
-                    lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
-                    LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
-
-                }
-            }
+            OpenFile();
         }
         
         private void btn_Stop_Click(object sender, RoutedEventArgs e)
@@ -304,6 +404,58 @@ namespace DPA_Musicsheets
             if (_player != null)
             {
                 _player.Dispose();
+            }
+        }
+
+        public void OpenFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid|Lily files (*.ly*)|*.ly*" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                txt_MidiFilePath.Text = openFileDialog.FileName;
+                //FillTestPSAMViewer();
+                string ext = System.IO.Path.GetExtension(openFileDialog.FileName);
+                if (ext == ".mid")
+                {
+                    MidiADPConverter midiConverter = new MidiADPConverter();
+                    ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                    ShowADPTrack(sheet.Tracks[1]);
+                    NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
+                    lilypondText.Text = ntlc.getLilypond(sheet);
+                }
+                else if (ext == ".ly")
+                {
+                    LilyADPConverter lilyConverter = new LilyADPConverter(txt_MidiFilePath.Text);
+                    ADPSheet sheet = lilyConverter.readContent();
+                    ShowADPTrack(sheet.Tracks[0]);
+                    lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
+                    LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
+
+                }
+            }
+        }
+
+        public void SaveFileToLilypond()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveFileToPdf()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddTekstAtSelection(string _text)
+        {
+            int selectionStart = lilypondText.SelectionStart;
+            lilypondText.SelectedText = _text;
+        }
+
+        private void OnKeyPressed(object sender, RoutedEventArgs e)
+        {
+            if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt || (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
+            {
+                keyHandler.OnKeyPressed();
             }
         }
     }

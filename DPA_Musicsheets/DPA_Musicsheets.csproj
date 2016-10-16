@@ -68,6 +68,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\Add34TimeCommand.cs" />
+    <Compile Include="Commands\Add68TimeCommand.cs" />
+    <Compile Include="Commands\AddBarlinesCommand.cs" />
+    <Compile Include="Commands\AddTempoCommand.cs" />
+    <Compile Include="Commands\Add44TimeCommand.cs" />
+    <Compile Include="Commands\AddTrebleClefCommand.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandTarget.cs" />
+    <Compile Include="Commands\OpenCommand.cs" />
+    <Compile Include="Commands\SaveLilypondCommand.cs" />
+    <Compile Include="Commands\SavePdfCommand.cs" />
+    <Compile Include="Controllers\ADPKeyHandler.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_B_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_C_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_S_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_T_3_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_T_4_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_T_6_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\CTRL_O_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\ALT_T_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\CTRL_S_KeyChain.cs" />
+    <Compile Include="Controllers\KeyChains\CTRL_S_P_KeyChain.cs" />
+    <Compile Include="Editor\CareTaker.cs" />
+    <Compile Include="Editor\Memento.cs" />
+    <Compile Include="Editor\Originator.cs" />
     <Compile Include="KeyCodeConvertor.cs" />
     <Compile Include="Lily\LilyADPConverter.cs" />
     <Compile Include="Lily\LilypondToPDF.cs" />
