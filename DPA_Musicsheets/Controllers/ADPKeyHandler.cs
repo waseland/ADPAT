@@ -23,13 +23,18 @@ namespace DPA_Musicsheets.Controller
             initializeKeyChains();
         }
 
+        public void restartThread()
+        {
+            updater.StopThread();
+            updater.StartThread();
+        }
+
         public void OnKeyPressed()
         {
 
             //updater.update();
 
-            updater.StopThread();
-            updater.StartThread();
+            restartThread();
 
             if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt || (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
             {

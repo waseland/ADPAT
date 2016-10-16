@@ -10,11 +10,13 @@ namespace DPA_Musicsheets.Midi
 {
     public class MidiADPConverter : ADPFileConverter
     {
-        private MidiMusicalSymbolBuilder musicalSymbolBuilder;
+        private ADPMusicalSymbolFactory musicalSymbolFactory;
+        private List<string> keyValues;
 
         public MidiADPConverter()
         {
-            musicalSymbolBuilder = new MidiMusicalSymbolBuilder();
+            InitKeyValues();
+            musicalSymbolFactory = new ADPMusicalSymbolFactory();
             ext = ".mid";
         }
 
@@ -54,16 +56,20 @@ namespace DPA_Musicsheets.Midi
 
                         if (channelMessage.Command == ChannelCommand.NoteOn || channelMessage.Command == ChannelCommand.NoteOff)
                         {
-                            tempADPMusicalSymbol = musicalSymbolBuilder.BuildMusicalSymbol(channelMessage, midiEvent, wholeNoteLength);
-                            if (tempADPMusicalSymbol != null)
+                            string[] inputStrings = convertToInputStrings(channelMessage, midiEvent, wholeNoteLength);
+                            if (inputStrings != null)
                             {
-                                tempADPBar.MusicalSymbols.Add(tempADPMusicalSymbol);
-                                if(midiEvent.AbsoluteTicks % (barAbsoluteTime) == 0)
+                                tempADPMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
+                                if (tempADPMusicalSymbol != null)
                                 {
-                                    //last musical symbol in bar
-                                    tempADPTrack.Bars.Add(tempADPBar);
-                                    tempADPBar = new ADPBar();
-                                    tempADPBar.TimeSignature = timeSignature;
+                                    tempADPBar.MusicalSymbols.Add(tempADPMusicalSymbol);
+                                    if (midiEvent.AbsoluteTicks % (barAbsoluteTime) == 0)
+                                    {
+                                        //last musical symbol in bar
+                                        tempADPTrack.Bars.Add(tempADPBar);
+                                        tempADPBar = new ADPBar();
+                                        tempADPBar.TimeSignature = timeSignature;
+                                    }
                                 }
                             }
                         }
@@ -102,6 +108,111 @@ namespace DPA_Musicsheets.Midi
             double beatNoteLength = wholeNoteLength / timeSignature[1];
             int barLength = (int)(timeSignature[0] * beatNoteLength);
             return barLength;
+        }
+
+        private string[] convertToInputStrings(ChannelMessage _message, MidiEvent _midiEvent, double _wholeNoteLength)
+        {
+            if (_midiEvent.DeltaTicks == 0)
+            {
+                return null;
+            }
+
+            string[] resultInputStrings = new string[6];
+
+            int[] tempDurationAndDots = calculateDurationAndDots(_midiEvent.DeltaTicks, _wholeNoteLength);
+
+            if (_midiEvent.DeltaTicks != 0 && _message.Data2 != 0)
+            {
+                //rest 
+                resultInputStrings[0] = "rest";
+                resultInputStrings[1] = ""+tempDurationAndDots[0];
+            }
+            else
+            {
+                //note
+                resultInputStrings[0] = "note";
+                resultInputStrings[1] = "" + tempDurationAndDots[0];
+                resultInputStrings[2] = "" + tempDurationAndDots[1];
+                resultInputStrings[3] = keyValues[_message.Data1 % 12];
+                if(resultInputStrings[3].Length > 1)
+                {
+                    resultInputStrings[4] = "" + 1;
+                } else
+                {
+                    resultInputStrings[4] = "" + 0;
+                }
+                resultInputStrings[5] = ""+ (_message.Data1 / 12 - 1);
+            }
+
+            return resultInputStrings;
+        }
+
+        private int[] calculateDurationAndDots(int _deltaTime, double _wholeNoteLength)
+        {
+            int[] result = { 0, 0 };
+
+            if (_deltaTime - _wholeNoteLength == 0)
+            {
+                result[0] = 1;
+                return result;
+            }
+            else if (_deltaTime - (_wholeNoteLength / 2) >= 0)
+            {
+                result[0] = 2;
+                if (_deltaTime - (_wholeNoteLength / 2) > 0)
+                {
+                    result[1] = 1;
+                }
+                return result;
+            }
+            else if (_deltaTime - (_wholeNoteLength / 4) >= 0)
+            {
+                result[0] = 4;
+                if (_deltaTime - (_wholeNoteLength / 4) > 0)
+                {
+                    result[1] = 1;
+                }
+                return result;
+            }
+            else if (_deltaTime - (_wholeNoteLength / 8) >= 0)
+            {
+                result[0] = 8;
+                if (_deltaTime - (_wholeNoteLength / 8) > 0)
+                {
+                    result[1] = 1;
+                }
+                return result;
+            }
+            else if (_deltaTime - (_wholeNoteLength / 16) >= 0)
+            {
+                result[0] = 16;
+                if (_deltaTime - (_wholeNoteLength / 16) > 0)
+                {
+                    result[1] = 1;
+                }
+                return result;
+            }
+            else
+            {
+                return result;
+            }
+        }
+
+        private void InitKeyValues()
+        {
+            keyValues = new List<string>();
+            keyValues.Add("C");
+            keyValues.Add("C#");
+            keyValues.Add("D");
+            keyValues.Add("D#");
+            keyValues.Add("E");
+            keyValues.Add("F");
+            keyValues.Add("F#");
+            keyValues.Add("G");
+            keyValues.Add("G#");
+            keyValues.Add("A");
+            keyValues.Add("A#");
+            keyValues.Add("B");
         }
     }
 }
