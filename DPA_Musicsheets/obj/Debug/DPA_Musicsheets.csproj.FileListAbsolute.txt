@@ -55,3 +55,4 @@ C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicshe
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\DPA_Musicsheets.pdb
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\MainWindow.g.cs
 C:\Users\woute_000\Documents\GitHub\ADPAT\DPA_Musicsheets\obj\Debug\MainWindow.baml
+C:\Users\j-elm\Source\Repos\ADPAT5\DPA_Musicsheets\bin\Debug\DPA_Musicsheets.exe.config
