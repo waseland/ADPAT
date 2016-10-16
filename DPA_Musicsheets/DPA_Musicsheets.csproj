@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Adapter\PSAMAdapter.cs" />
+    <Compile Include="ADPFileConverter.cs" />
     <Compile Include="Commands\Add34TimeCommand.cs" />
     <Compile Include="Commands\Add68TimeCommand.cs" />
     <Compile Include="Commands\AddBarlinesCommand.cs" />
@@ -95,10 +96,9 @@
     <Compile Include="Editor\CareTaker.cs" />
     <Compile Include="Editor\Memento.cs" />
     <Compile Include="Editor\Originator.cs" />
-    <Compile Include="KeyCodeConvertor.cs" />
     <Compile Include="Lily\LilyADPConverter.cs" />
+    <Compile Include="Lily\LilypondMusicalSymbolBuilder.cs" />
     <Compile Include="Lily\LilypondToPDF.cs" />
-    <Compile Include="MidiConverter.cs" />
     <Compile Include="MidiTrack.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -116,21 +116,15 @@
   <ItemGroup>
     <Compile Include="MidiPlayer.cs" />
     <Compile Include="MidiReader.cs" />
-    <Compile Include="DoubleValueVariable.cs" />
     <Compile Include="Midi\MidiADPConverter.cs" />
     <Compile Include="Midi\MidiMusicalSymbolBuilder.cs" />
-    <Compile Include="MyMusicSheet.cs" />
-    <Compile Include="MyMusicalSymbol.cs" />
-    <Compile Include="MyTrack.cs" />
     <Compile Include="MusicComponentModels\ADPBar.cs" />
     <Compile Include="MusicComponentModels\ADPMusicalSymbol.cs" />
     <Compile Include="MusicComponentModels\ADPNote.cs" />
     <Compile Include="MusicComponentModels\ADPRest.cs" />
     <Compile Include="MusicComponentModels\ADPSheet.cs" />
     <Compile Include="MusicComponentModels\ADPTrack.cs" />
-    <Compile Include="MyMusicalSymbolBuilder.cs" />
-    <Compile Include="MyTrackBuilder.cs" />
-    <Compile Include="NoteToLilypondConverter.cs" />
+    <Compile Include="Lily\NoteToLilypondConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

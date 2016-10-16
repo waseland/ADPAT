@@ -56,7 +56,7 @@ namespace DPA_Musicsheets
                         case MessageType.Meta:
                             var metaMessage = midiEvent.MidiMessage as MetaMessage;
                             trackLog.Messages.Add(GetMetaString(metaMessage));
-                            
+
                             if (metaMessage.MetaType == MetaType.TrackName)
                             {
                                 trackLog.TrackName += " " + Encoding.Default.GetString(metaMessage.GetBytes());

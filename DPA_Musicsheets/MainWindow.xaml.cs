@@ -4,7 +4,6 @@ using DPA_Musicsheets.Controller;
 using DPA_Musicsheets.Editor;
 using DPA_Musicsheets.Lily;
 using DPA_Musicsheets.Midi;
-using DPA_Musicsheets.Models;
 using DPA_Musicsheets.MusicComponentModels;
 using Microsoft.Win32;
 using PSAMControlLibrary;
@@ -206,8 +205,8 @@ namespace DPA_Musicsheets
                 }
                 else if (ext == ".ly")
                 {
-                    LilyADPConverter lilyConverter = new LilyADPConverter(txt_MidiFilePath.Text);
-                    ADPSheet sheet = lilyConverter.readContent();
+                    LilyADPConverter lilyConverter = new LilyADPConverter();
+                    ADPSheet sheet = lilyConverter.ReadFile(txt_MidiFilePath.Text);
                     ShowSheetVisualisation(sheet.Tracks[0]);
                     lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
                     SetNewState();
