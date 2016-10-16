@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Midi
 {
-    public class MidiADPConverter
+    public class MidiADPConverter : ADPFileConverter
     {
         private MidiMusicalSymbolBuilder musicalSymbolBuilder;
 
         public MidiADPConverter()
         {
             musicalSymbolBuilder = new MidiMusicalSymbolBuilder();
+            ext = ".mid";
         }
 
-        public ADPSheet convertMidi(String path)
+        public override ADPSheet ReadFile(String path)
         {
             var sequence = new Sequence();
             sequence.Load(path);

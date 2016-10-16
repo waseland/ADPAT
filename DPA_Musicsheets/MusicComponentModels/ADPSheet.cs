@@ -14,5 +14,17 @@ namespace DPA_Musicsheets.MusicComponentModels
         {
             Tracks = new List<ADPTrack>();
         }
+
+        public ADPTrack getTrack()
+        {
+            foreach(ADPTrack track in Tracks)
+            {
+                if(track.Bars.Count > 0)
+                {
+                    return track;
+                }
+            }
+            return Tracks[0];
+        }
     }
 }

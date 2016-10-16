@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DPA_Musicsheets.Lily
 {
-    public class LilyADPConverter
+    public class LilyADPConverter : ADPFileConverter
     {
         private LilypondMusicalSymbolBuilder lilypondMusicalSymbolBuilder;
 
@@ -22,9 +22,10 @@ namespace DPA_Musicsheets.Lily
         public LilyADPConverter()
         {
             lilypondMusicalSymbolBuilder = new LilypondMusicalSymbolBuilder();
+            ext = ".ly";
         }
 
-        public ADPSheet ReadFile(string _path)
+        public override ADPSheet ReadFile(string _path)
         {
             ADPNote latestNote = new ADPNote();
             latestNote.Octave = 4;

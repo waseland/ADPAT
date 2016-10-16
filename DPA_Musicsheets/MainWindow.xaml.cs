@@ -38,6 +38,7 @@ namespace DPA_Musicsheets
         private CareTaker careTaker;
         private ADPKeyHandler keyHandler;
         private PSAMAdapter psamAdapter;
+        private ADPFileConverter firstFileConverter;
 
 
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
@@ -53,6 +54,17 @@ namespace DPA_Musicsheets
             DataContext = MidiTracks;
             ShowSampleVisualisation();
             initializeEditor();
+            initializeFileConverters();
+        }
+
+        private void initializeFileConverters()
+        {
+            LilyADPConverter lyConverter = new LilyADPConverter();
+            MidiADPConverter midConverter = new MidiADPConverter();
+
+            lyConverter.SetNextADPFileConverter(midConverter);
+
+            firstFileConverter = lyConverter;
         }
 
         private void initializeEditor()
@@ -162,7 +174,7 @@ namespace DPA_Musicsheets
                 //MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
                 //ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
                 MidiADPConverter midiConverter = new MidiADPConverter();
-                ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
+                ADPSheet sheet = midiConverter.ReadFile(txt_MidiFilePath.Text);
                 ShowSheetVisualisation(sheet.Tracks[1]);
             }
         }
@@ -193,25 +205,15 @@ namespace DPA_Musicsheets
             if (openFileDialog.ShowDialog() == true)
             {
                 txt_MidiFilePath.Text = openFileDialog.FileName;
-                string ext = System.IO.Path.GetExtension(openFileDialog.FileName);
-                if (ext == ".mid")
+                ADPSheet sheet = firstFileConverter.Handle(openFileDialog.FileName);
+                if(sheet != null)
                 {
-                    MidiADPConverter midiConverter = new MidiADPConverter();
-                    ADPSheet sheet = midiConverter.convertMidi(txt_MidiFilePath.Text);
-                    ShowSheetVisualisation(sheet.Tracks[1]);
+                    ShowSheetVisualisation(sheet.getTrack());
                     NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
                     lilypondText.Text = ntlc.getLilypond(sheet);
                     SetNewState();
                 }
-                else if (ext == ".ly")
-                {
-                    LilyADPConverter lilyConverter = new LilyADPConverter();
-                    ADPSheet sheet = lilyConverter.ReadFile(txt_MidiFilePath.Text);
-                    ShowSheetVisualisation(sheet.Tracks[0]);
-                    lilypondText.Text = System.IO.File.ReadAllText(txt_MidiFilePath.Text);
-                    SetNewState();
-                    LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
-                }
+                //LilypondToPDF l2pdf = new LilypondToPDF(txt_MidiFilePath.Text); //De Lilypond to PDF converter wordt zo aangeroepen
             }
         }
 
