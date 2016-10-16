@@ -40,6 +40,7 @@ namespace DPA_Musicsheets
         private ADPKeyHandler keyHandler;
         private PSAMAdapter psamAdapter;
         private ADPFileConverter firstFileConverter;
+        private bool needsSaving;
 
 
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
@@ -56,6 +57,7 @@ namespace DPA_Musicsheets
             ShowSampleVisualisation();
             initializeEditor();
             initializeFileConverters();
+            needsSaving = false;
         }
 
         private void initializeFileConverters()
@@ -193,10 +195,36 @@ namespace DPA_Musicsheets
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _outputDevice.Close();
-            if (_player != null)
+            if(needsSaving)
             {
-                _player.Dispose();
+                string sMessageBoxText = "You haven't saved your progress. Do you want to save this before closing?";
+                string sCaption = "Save";
+
+                MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
+                MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+                MessageBoxResult rsltMessageBox = MessageBox.Show(sMessageBoxText, sCaption, btnMessageBox, icnMessageBox);
+
+                switch (rsltMessageBox)
+                {
+                    case MessageBoxResult.Yes:
+                        SaveFileToLilypond();
+                        _outputDevice.Close();
+                        if (_player != null)
+                        {
+                            _player.Dispose();
+                        }
+                        break;
+
+                    case MessageBoxResult.No:
+                        Console.WriteLine("CLOSING");
+                        _outputDevice.Close();
+                        if (_player != null)
+                        {
+                            _player.Dispose();
+                        }
+                        break;
+                }
             }
         }
 
@@ -220,6 +248,7 @@ namespace DPA_Musicsheets
         public void SaveFileToLilypond()
         {
             SaveAsLilypond saveAsLilypond = new SaveAsLilypond(lilypondText.Text);
+            needsSaving = false;
         }
 
         public void SaveFileToPdf()
@@ -249,6 +278,7 @@ namespace DPA_Musicsheets
 
         public void SetNewState()
         {
+            needsSaving = true;
             originator.setState(lilypondText.Text);
             careTaker.add(originator.storeInMemento());
             savedMementos++;
