@@ -253,7 +253,6 @@ namespace DPA_Musicsheets
         public void SaveFileToLilypond()
         {
             fileExporter.SaveAsLilypond(lilypondText.Text);
-            SaveAsLilypond saveAsLilypond = new SaveAsLilypond(lilypondText.Text);
             needsSaving = false;
         }
 
