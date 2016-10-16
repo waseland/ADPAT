@@ -1,6 +1,7 @@
 ﻿using DPA_Musicsheets.Adapter;
 using DPA_Musicsheets.Commands;
 using DPA_Musicsheets.Controller;
+using DPA_Musicsheets.Controllers;
 using DPA_Musicsheets.Editor;
 using DPA_Musicsheets.Lily;
 using DPA_Musicsheets.Midi;
@@ -40,6 +41,8 @@ namespace DPA_Musicsheets
         private ADPKeyHandler keyHandler;
         private PSAMAdapter psamAdapter;
         private ADPFileConverter firstFileConverter;
+        private LilyADPConverter lycon;
+        private FileExporter fileExporter;
 
 
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
@@ -48,6 +51,8 @@ namespace DPA_Musicsheets
 
         public MainWindow()
         {
+            lycon = new LilyADPConverter();
+            fileExporter = new FileExporter();
             this.MidiTracks = new ObservableCollection<MidiTrack>();
             keyHandler = new ADPKeyHandler(this);
             psamAdapter = new PSAMAdapter();
@@ -219,12 +224,27 @@ namespace DPA_Musicsheets
 
         public void SaveFileToLilypond()
         {
-            SaveAsLilypond saveAsLilypond = new SaveAsLilypond(lilypondText.Text);
+            fileExporter.SaveAsLilypond(lilypondText.Text);
         }
 
         public void SaveFileToPdf()
         {
-            LilypondToPDF l2pdf = new LilypondToPDF(lilypondText.Text);
+            fileExporter.LilypondToPDF(lilypondText.Text);
+        }
+
+        public string UpdateBarlinesFromLilypond()
+        {
+            return this.lilypondText.Dispatcher.Invoke(
+                () =>
+                {
+                    ADPSheet sheet = lycon.ConvertText(lilypondText.Text);
+                    if (sheet != null)
+                    {
+                        ShowSheetVisualisation(sheet.getTrack());
+                    }
+                    return this.lilypondText.Text;
+                }
+            );
         }
 
         public void AddTekstAtSelection(string _text)
@@ -243,7 +263,7 @@ namespace DPA_Musicsheets
         {
             if (e.Key == System.Windows.Input.Key.Back)
             {
-                SetNewState();
+                keyHandler.OnKeyPressed();
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using DPA_Musicsheets.Commands;
 using DPA_Musicsheets.Controllers.KeyChains;
+using DPA_Musicsheets.Editor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,23 @@ namespace DPA_Musicsheets.Controller
     {
         private KeyChain firstKeyChain;
         private CommandTarget target;
+        private Updater updater;
 
         public ADPKeyHandler(CommandTarget _target)
         {
             target = _target;
+            updater = new Updater(target);
             initializeKeyChains();
         }
 
         public void OnKeyPressed()
         {
+
+            //updater.update();
+
+            updater.StopThread();
+            updater.StartThread();
+
             if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt || (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
             {
                 foreach (Key k in getPressedKeys())
@@ -39,7 +48,6 @@ namespace DPA_Musicsheets.Controller
         private List<Key> getPressedKeys()
         {
             List<Key> pressedKeys = new List<Key>();
-
             //alt and control
             if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt) // Is ALT key pressed
             {
