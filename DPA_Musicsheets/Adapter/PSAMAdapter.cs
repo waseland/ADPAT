@@ -49,17 +49,25 @@ namespace DPA_Musicsheets.Adapter
         {
             StackPanel resultStackPanel = new StackPanel();
             int barCount = 0;
-            int[] timeSignature = new int[2];
+            bool barlineHasTimeSignature = false;
+            int[] currentTimeSignature = new int[2];
 
             IncipitViewerWPF barLine = createNewBarline();
 
             foreach (ADPBar tempBar in _adpTrack.Bars)
             {
-                if (tempBar.TimeSignature != timeSignature)
+                if (!barlineHasTimeSignature)
                 {
-                    timeSignature = tempBar.TimeSignature;
-                    //barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, 4, 4));
-                    barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)timeSignature[0], (uint)timeSignature[1]));
+                    currentTimeSignature[0] = tempBar.TimeSignature[0];
+                    currentTimeSignature[1] = tempBar.TimeSignature[1];
+                    barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)tempBar.TimeSignature[0], (uint)tempBar.TimeSignature[1]));
+                    barLine.AddMusicalSymbol(new Barline());
+                    barlineHasTimeSignature = true;
+                } else if(currentTimeSignature[0] != tempBar.TimeSignature[0] && currentTimeSignature[1] != tempBar.TimeSignature[1])
+                {
+                    currentTimeSignature[0] = tempBar.TimeSignature[0];
+                    currentTimeSignature[1] = tempBar.TimeSignature[1];
+                    barLine.AddMusicalSymbol(new TimeSignature(TimeSignatureType.Numbers, (uint)tempBar.TimeSignature[0], (uint)tempBar.TimeSignature[1]));
                 }
 
                 // add symbols
@@ -94,6 +102,7 @@ namespace DPA_Musicsheets.Adapter
                     resultStackPanel.Children.Add(barLine);
                     barLine = createNewBarline();
                     barCount = 0;
+                    barlineHasTimeSignature = false;
                 }
             }
             if(barCount > 0)

@@ -83,6 +83,14 @@ namespace DPA_Musicsheets.Lily
                         i++;
                         break;
                     case "\\repeat":
+                        ADPBar tempBar = new ADPBar();
+                        tempBar.MusicalSymbols = notes;
+                        int[] ts = new int[2];
+                        ts[0] = timeSignature[0];
+                        ts[1] = timeSignature[1];
+                        tempBar.TimeSignature = ts;
+                        adpt.Bars.Add(tempBar);
+                        notes = new List<ADPMusicalSymbol>();
                         i++;
                         i++;
                         break;
@@ -100,9 +108,9 @@ namespace DPA_Musicsheets.Lily
                         }
                         else
                         {
-                            ADPBar tempBar = new ADPBar();
+                            tempBar = new ADPBar();
                             tempBar.MusicalSymbols = notes;
-                            int[] ts = new int[2];
+                            ts = new int[2];
                             ts[0] = timeSignature[0];
                             ts[1] = timeSignature[1];
                             tempBar.TimeSignature = ts;
@@ -129,11 +137,14 @@ namespace DPA_Musicsheets.Lily
                         //{
                         //    type = contentType.none;
                         //}
-                        ADPBar tempBar2 = new ADPBar();
-                        tempBar2.MusicalSymbols = notes;
-                        tempBar2.TimeSignature = timeSignature;
-                        adpt.Bars.Add(tempBar2);
-                        notes = new List<ADPMusicalSymbol>();
+                        if(notes.Count > 0)
+                        {
+                            ADPBar tempBar2 = new ADPBar();
+                            tempBar2.MusicalSymbols = notes;
+                            tempBar2.TimeSignature = timeSignature;
+                            adpt.Bars.Add(tempBar2);
+                            notes = new List<ADPMusicalSymbol>();
+                        }
                         break;
                     case "}}":  //End of File
                         break;
