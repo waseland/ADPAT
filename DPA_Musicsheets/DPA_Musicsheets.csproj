@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Adapter\PSAMAdapter.cs" />
     <Compile Include="Commands\Add34TimeCommand.cs" />
     <Compile Include="Commands\Add68TimeCommand.cs" />
     <Compile Include="Commands\AddBarlinesCommand.cs" />
