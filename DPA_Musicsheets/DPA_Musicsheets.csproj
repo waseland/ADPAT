@@ -99,6 +99,7 @@
     <Compile Include="Lily\LilyADPConverter.cs" />
     <Compile Include="Lily\LilypondMusicalSymbolBuilder.cs" />
     <Compile Include="Lily\LilypondToPDF.cs" />
+    <Compile Include="Lily\SaveAsLilypond.cs" />
     <Compile Include="MidiTrack.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
