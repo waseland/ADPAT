@@ -18,7 +18,7 @@ namespace DPA_Musicsheets.Controller
             addKeys();
         }
 
-        public void setNextKeyChain(KeyChain _nextKeyChain)
+        public void SetNextKeyChain(KeyChain _nextKeyChain)
         {
             nextKeyChain = _nextKeyChain;
         }

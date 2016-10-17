@@ -20,7 +20,7 @@ namespace DPA_Musicsheets
 {
     public partial class MainWindow : Window, CommandTarget
     {
-        private MidiPlayer _player;
+        private MidiPlayer player;
         private int savedMementos;
         private int currentMemento;
         private Originator originator;
@@ -29,24 +29,24 @@ namespace DPA_Musicsheets
         private PSAMAdapter psamAdapter;
         private ADPFileConverter firstFileConverter;
         private bool needsSaving;
-        private LilyADPConverter lycon;
+        private LilyADPConverter lilyADPConverter;
         private FileExporter fileExporter;
 
 
         public ObservableCollection<MidiTrack> MidiTracks { get; private set; }
 
-        private OutputDevice _outputDevice = new OutputDevice(0);
+        private OutputDevice outputDevice = new OutputDevice(0);
 
         public MainWindow()
         {
-            lycon = new LilyADPConverter();
+            lilyADPConverter = new LilyADPConverter();
             fileExporter = new FileExporter();
             this.MidiTracks = new ObservableCollection<MidiTrack>();
             keyHandler = new ADPKeyHandler(this);
             psamAdapter = new PSAMAdapter();
             InitializeComponent();
             DataContext = MidiTracks;
-            ShowSampleVisualisation();
+            showSampleVisualisation();
             initializeEditor();
             initializeFileConverters();
             needsSaving = false;
@@ -71,28 +71,28 @@ namespace DPA_Musicsheets
 
             SetNewState();
 
-            ReEvaluateButtons();
+            reEvaluateButtons();
         }
 
-        private void ShowSheetVisualisation(ADPTrack _adpTrack)
+        private void showSheetVisualisation(ADPTrack _adpTrack)
         {
             barlinesScrollViewer.Content = psamAdapter.GetSheetVisualisation(_adpTrack);
         }
 
-        private void ShowSampleVisualisation()
+        private void showSampleVisualisation()
         {
             barlinesScrollViewer.Content = psamAdapter.GetSampleVisualisation();
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
         {
-            if(_player != null)
+            if(player != null)
             {
-                _player.Dispose();
+                player.Dispose();
             }
 
-            _player = new MidiPlayer(_outputDevice);
-            _player.Play(txt_MidiFilePath.Text);
+            player = new MidiPlayer(outputDevice);
+            player.Play(txt_MidiFilePath.Text);
         }
 
         private void btnUndo_Click(object sender, RoutedEventArgs e)
@@ -101,12 +101,12 @@ namespace DPA_Musicsheets
             if (currentMemento >= 1)
             {
                 currentMemento--;
-                lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento));
+                lilypondText.Text = originator.RestoreFromMemento(careTaker.Get(currentMemento));
                 keyHandler.RestartThread();
             }
 
 
-            ReEvaluateButtons();
+            reEvaluateButtons();
         }
 
         private void btnRedo_Click(object sender, RoutedEventArgs e)
@@ -114,11 +114,11 @@ namespace DPA_Musicsheets
             if (currentMemento < savedMementos)
             {
                 currentMemento++;
-                lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
+                lilypondText.Text = originator.RestoreFromMemento(careTaker.Get(currentMemento - 1));
                 keyHandler.RestartThread();
             }
 
-            ReEvaluateButtons();
+            reEvaluateButtons();
         }
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
@@ -127,7 +127,7 @@ namespace DPA_Musicsheets
             Console.WriteLine("----------------------------- Update --------------------------");
         }
 
-        private void ReEvaluateButtons()
+        private void reEvaluateButtons()
         {
             if (savedMementos > 1 && currentMemento > 0)
             {
@@ -156,8 +156,8 @@ namespace DPA_Musicsheets
         
         private void btn_Stop_Click(object sender, RoutedEventArgs e)
         {
-            if (_player != null)
-                _player.Dispose();
+            if (player != null)
+                player.Dispose();
         }
 
         private void btn_ShowContent_Click(object sender, RoutedEventArgs e)
@@ -166,20 +166,20 @@ namespace DPA_Musicsheets
 
             if (extension == "mid")
             {
-                ShowMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
+                showMidiTracks(MidiReader.ReadMidi(txt_MidiFilePath.Text));
                 //MidiConverter midiConverter = new MidiConverter();
                 //MyMusicSheet mss = midiConverter.convertMidi(txt_MidiFilePath.Text);
                 //ShowTrack(mss.Tracks[1], mss.TimeSignature[0], mss.TimeSignature[1]);
                 MidiADPConverter midiConverter = new MidiADPConverter();
                 ADPSheet sheet = midiConverter.ReadFile(txt_MidiFilePath.Text);
-                ShowSheetVisualisation(sheet.Tracks[1]);
+                showSheetVisualisation(sheet.Tracks[1]);
             }
         }
 
-        private void ShowMidiTracks(IEnumerable<MidiTrack> midiTracks)
+        private void showMidiTracks(IEnumerable<MidiTrack> _midiTracks)
         {
             MidiTracks.Clear();
-            foreach (var midiTrack in midiTracks)
+            foreach (var midiTrack in _midiTracks)
             {
                 MidiTracks.Add(midiTrack);
             }
@@ -203,19 +203,19 @@ namespace DPA_Musicsheets
                 {
                     case MessageBoxResult.Yes:
                         SaveFileToLilypond();
-                        _outputDevice.Close();
-                        if (_player != null)
+                        outputDevice.Close();
+                        if (player != null)
                         {
-                            _player.Dispose();
+                            player.Dispose();
                         }
                         break;
 
                     case MessageBoxResult.No:
                         Console.WriteLine("CLOSING");
-                        _outputDevice.Close();
-                        if (_player != null)
+                        outputDevice.Close();
+                        if (player != null)
                         {
-                            _player.Dispose();
+                            player.Dispose();
                         }
                         break;
                 }
@@ -231,9 +231,9 @@ namespace DPA_Musicsheets
                 ADPSheet sheet = firstFileConverter.Handle(openFileDialog.FileName);
                 if(sheet != null)
                 {
-                    ShowSheetVisualisation(sheet.getTrack());
+                    showSheetVisualisation(sheet.getTrack());
                     NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
-                    lilypondText.Text = ntlc.getLilypond(sheet);
+                    lilypondText.Text = ntlc.GetLilypond(sheet);
                     SetNewState();
                 }
             }
@@ -255,10 +255,10 @@ namespace DPA_Musicsheets
             return this.lilypondText.Dispatcher.Invoke(
                 () =>
                 {
-                    ADPSheet sheet = lycon.ConvertText(lilypondText.Text);
+                    ADPSheet sheet = lilyADPConverter.ConvertText(lilypondText.Text);
                     if (sheet != null)
                     {
-                        ShowSheetVisualisation(sheet.getTrack());
+                        showSheetVisualisation(sheet.getTrack());
                     }
                     return this.lilypondText.Text;
                 }
@@ -288,12 +288,12 @@ namespace DPA_Musicsheets
         public void SetNewState()
         {
             needsSaving = true;
-            originator.setState(lilypondText.Text);
-            careTaker.add(originator.storeInMemento());
+            originator.SetState(lilypondText.Text);
+            careTaker.Add(originator.StoreInMemento());
             savedMementos++;
             currentMemento++;
 
-            ReEvaluateButtons();
+            reEvaluateButtons();
         }
 
         public void AddBarlinesToEditor()

@@ -11,13 +11,13 @@ namespace DPA_Musicsheets.Editor
             mementoList = new List<Memento>();
         }
 
-        public void add(Memento newMemento)
+        public void Add(Memento _newMemento)
         {
-            mementoList.Add(newMemento);
+            mementoList.Add(_newMemento);
         }
-        public Memento get(int index)
+        public Memento Get(int _index)
         {
-            return mementoList[index];
+            return mementoList[_index];
         }
     }
 }

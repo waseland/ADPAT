@@ -5,9 +5,8 @@ using System.IO;
 
 namespace DPA_Musicsheets.Controllers
 {
-    class FileExporter
+    public class FileExporter
     {
-
         public void SaveAsLilypond(string _text)
         {
             if (_text == "")
@@ -72,11 +71,6 @@ namespace DPA_Musicsheets.Controllers
                     Console.WriteLine(ex);
                 }
             }
-
-
-
-
-
         }
     }
 }

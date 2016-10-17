@@ -9,7 +9,7 @@ namespace DPA_Musicsheets.Editor
         {
             this.state = newState;
         }
-        public string getState()
+        public string GetState()
         {
             return state;
         }

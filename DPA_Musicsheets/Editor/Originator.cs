@@ -6,24 +6,24 @@ namespace DPA_Musicsheets.Editor
     {
         private string state;
 
-        public void setState(string newState)
+        public void SetState(string _newState)
         {
-            this.state = newState;
+            this.state = _newState;
         }
 
-        public string getState()
+        public string GetState()
         {
             return state;
         }
 
-        public Memento storeInMemento()
+        public Memento StoreInMemento()
         {
             return new Memento(state);
         }
 
-        public String restoreFromMemento(Memento memento)
+        public String RestoreFromMemento(Memento _memento)
         {
-            state = memento.getState();
+            state = _memento.GetState();
             return state;
         }
 

@@ -7,7 +7,7 @@ namespace DPA_Musicsheets
 {
     public class NoteToLilypondConverter
     {
-        public string getLilypond(ADPSheet _musicSheet)
+        public string GetLilypond(ADPSheet _musicSheet)
         {
             string result = "";
             result += "\\relative c' { \n";

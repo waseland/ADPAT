@@ -54,7 +54,7 @@ namespace DPA_Musicsheets.Midi
                             string[] inputStrings = convertToInputStrings(channelMessage, midiEvent, wholeNoteLength);
                             if (inputStrings != null)
                             {
-                                tempADPMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
+                                tempADPMusicalSymbol = musicalSymbolFactory.GetMusicalSymbol(inputStrings);
                                 if (tempADPMusicalSymbol != null)
                                 {
                                     tempADPBar.MusicalSymbols.Add(tempADPMusicalSymbol);

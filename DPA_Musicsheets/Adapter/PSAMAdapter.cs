@@ -75,7 +75,7 @@ namespace DPA_Musicsheets.Adapter
                         if (tempSymbol.GetType() == typeof(ADPRest))
                         {
                             //rest
-                            barLine.AddMusicalSymbol(new Rest(ConvertDuration(tempSymbol.Duration)));
+                            barLine.AddMusicalSymbol(new Rest(convertDuration(tempSymbol.Duration)));
                         }
                         else
                         {
@@ -83,11 +83,11 @@ namespace DPA_Musicsheets.Adapter
                             //note
                             if (tempNote.AmountOfDots > 0)
                             {
-                                barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = tempNote.AmountOfDots });
+                                barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, convertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }) { NumberOfDots = tempNote.AmountOfDots });
                             }
                             else
                             {
-                                barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, ConvertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
+                                barLine.AddMusicalSymbol(new Note(tempNote.Key, tempNote.Alter, tempNote.Octave, convertDuration(tempNote.Duration), NoteStemDirection.Down, NoteTieType.None, new List<NoteBeamType>() { NoteBeamType.Single }));
                             }
                         }
                     }
@@ -113,7 +113,7 @@ namespace DPA_Musicsheets.Adapter
             return resultStackPanel;
         }
 
-        private MusicalSymbolDuration ConvertDuration(int _duration)
+        private MusicalSymbolDuration convertDuration(int _duration)
         {
             switch (_duration)
             {

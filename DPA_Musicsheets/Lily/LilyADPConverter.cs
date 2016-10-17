@@ -172,7 +172,7 @@ namespace DPA_Musicsheets.Lily
                             string[] inputStrings = convertToInputStrings(_content[i], latestNote);
                             if (inputStrings != null)
                             {
-                                tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
+                                tempMusicalSymbol = musicalSymbolFactory.GetMusicalSymbol(inputStrings);
                                 if (tempMusicalSymbol is ADPNote)
                                 {
                                     latestNote = (ADPNote)tempMusicalSymbol;
@@ -186,7 +186,7 @@ namespace DPA_Musicsheets.Lily
                             string[] inputStrings = convertToInputStrings(_content[i], latestNote);
                             if (inputStrings != null)
                             {
-                                tempMusicalSymbol = musicalSymbolFactory.getMusicalSymbol(inputStrings);
+                                tempMusicalSymbol = musicalSymbolFactory.GetMusicalSymbol(inputStrings);
                                 if (tempMusicalSymbol is ADPNote)
                                 {
                                     latestNote = (ADPNote)tempMusicalSymbol;

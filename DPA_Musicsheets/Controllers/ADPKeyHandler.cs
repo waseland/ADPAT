@@ -114,15 +114,15 @@ namespace DPA_Musicsheets.Controller
             KeyChain ctrl_s = new CTRL_S_KeyChain(target);
             KeyChain ctrl_s_p = new CTRL_S_P_KeyChain(target);
 
-            ctrl_s.setNextKeyChain(ctrl_s_p);
-            ctrl_o.setNextKeyChain(ctrl_s);
-            alt_t.setNextKeyChain(ctrl_o);
-            alt_t_6.setNextKeyChain(alt_t);
-            alt_t_4.setNextKeyChain(alt_t_6);
-            alt_t_3.setNextKeyChain(alt_t_4);
-            alt_s.setNextKeyChain(alt_t_3);
-            alt_c.setNextKeyChain(alt_s);
-            alt_b.setNextKeyChain(alt_c);
+            ctrl_s.SetNextKeyChain(ctrl_s_p);
+            ctrl_o.SetNextKeyChain(ctrl_s);
+            alt_t.SetNextKeyChain(ctrl_o);
+            alt_t_6.SetNextKeyChain(alt_t);
+            alt_t_4.SetNextKeyChain(alt_t_6);
+            alt_t_3.SetNextKeyChain(alt_t_4);
+            alt_s.SetNextKeyChain(alt_t_3);
+            alt_c.SetNextKeyChain(alt_s);
+            alt_b.SetNextKeyChain(alt_c);
 
             firstKeyChain = alt_b;
         }
