@@ -15,10 +15,10 @@ namespace DPA_Musicsheets.Midi
             ext = ".mid";
         }
 
-        public override ADPSheet ReadFile(String path)
+        public override ADPSheet ReadFile(String _path)
         {
             var sequence = new Sequence();
-            sequence.Load(path);
+            sequence.Load(_path);
 
             ADPSheet returnSheet = new ADPSheet();
             ADPTrack tempADPTrack;
@@ -98,10 +98,10 @@ namespace DPA_Musicsheets.Midi
             return returnSheet;
         }
 
-        private int calculateBarLength(int[] timeSignature, double wholeNoteLength)
+        private int calculateBarLength(int[] _timeSignature, double _wholeNoteLength)
         {
-            double beatNoteLength = wholeNoteLength / timeSignature[1];
-            int barLength = (int)(timeSignature[0] * beatNoteLength);
+            double beatNoteLength = _wholeNoteLength / _timeSignature[1];
+            int barLength = (int)(_timeSignature[0] * beatNoteLength);
             return barLength;
         }
 

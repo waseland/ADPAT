@@ -7,20 +7,20 @@ namespace DPA_Musicsheets
 {
     public class NoteToLilypondConverter
     {
-        public string getLilypond(ADPSheet musicSheet)
+        public string getLilypond(ADPSheet _musicSheet)
         {
             string result = "";
             result += "\\relative c' { \n";
             result += "\\clef treble \n";
             result += "\\time ";
-            result += musicSheet.getTrack().Bars[1].TimeSignature[0];
+            result += _musicSheet.getTrack().Bars[1].TimeSignature[0];
             result += "/";
-            result += musicSheet.getTrack().Bars[1].TimeSignature[1];
+            result += _musicSheet.getTrack().Bars[1].TimeSignature[1];
             result += " \n";
             result += "\\tempo 4=120 \n";
 
             // add notes
-            result += convertMusicalSymbols(musicSheet.getTrack().Bars);
+            result += convertMusicalSymbols(_musicSheet.getTrack().Bars);
 
             result += "}";
 

@@ -8,9 +8,9 @@ namespace DPA_Musicsheets.Controllers
     class FileExporter
     {
 
-        public void SaveAsLilypond(string text)
+        public void SaveAsLilypond(string _text)
         {
-            if (text == "")
+            if (_text == "")
             {
 
             }
@@ -21,15 +21,15 @@ namespace DPA_Musicsheets.Controllers
                 if (saveFileDialog.SafeFileName != "")
                 {
                     string targetFolderSave = Path.GetFullPath(saveFileDialog.FileName);
-                    System.IO.File.WriteAllText(@targetFolderSave, text);
+                    System.IO.File.WriteAllText(@targetFolderSave, _text);
                 }
             }
         }
 
-        public void LilypondToPDF(string text)
+        public void LilypondToPDF(string _text)
         {
             string file = @"C:\temp\WriteText.ly";
-            System.IO.File.WriteAllText(@file, text);
+            System.IO.File.WriteAllText(@file, _text);
 
             string name = System.IO.Path.GetFileName(file);
             string location = System.IO.Path.GetDirectoryName(file);
