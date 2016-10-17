@@ -14,7 +14,7 @@ namespace DPA_Musicsheets.Editor
     {
 
         private CommandTarget target;
-        private System.Timers.Timer t;
+        private System.Timers.Timer timer;
 
         public Updater(CommandTarget _target)
         {
@@ -24,27 +24,27 @@ namespace DPA_Musicsheets.Editor
 
         private void initTimer()
         {
-            t = new System.Timers.Timer();
-            t.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            t.Interval = 1500;
-            t.Enabled = true;
-            t.Stop();
+            timer = new System.Timers.Timer();
+            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            timer.Interval = 1500;
+            timer.Enabled = true;
+            timer.Stop();
         }
 
         public void StopThread()
         {
-            t.Stop();
+            timer.Stop();
         }
 
         public void StartThread()
         {
-            t.Start();
+            timer.Start();
         }
 
         void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             target.UpdateBarlinesFromLilypond();
-            t.Stop();
+            timer.Stop();
         }
     }
 }

@@ -8,21 +8,21 @@ namespace DPA_Musicsheets.MusicComponentModels
 {
     public class ADPMusicalSymbolFactory
     {
-        public ADPMusicalSymbol getMusicalSymbol(string[] inputStrings)
+        public ADPMusicalSymbol getMusicalSymbol(string[] _inputStrings)
         {
-            if (inputStrings[0].Equals("rest"))
+            if (_inputStrings[0].Equals("rest"))
             {
                 ADPRest resultMusicalSymbol = new ADPRest();
-                resultMusicalSymbol.Duration = int.Parse(inputStrings[1]);
+                resultMusicalSymbol.Duration = int.Parse(_inputStrings[1]);
                 return resultMusicalSymbol;
             } else
             {
                 ADPNote resultMusicalSymbol = new ADPNote();
-                resultMusicalSymbol.Duration = int.Parse(inputStrings[1]);
-                resultMusicalSymbol.AmountOfDots = int.Parse(inputStrings[2]);
-                resultMusicalSymbol.Key = inputStrings[3];
-                resultMusicalSymbol.Alter = int.Parse(inputStrings[4]);
-                resultMusicalSymbol.Octave = int.Parse(inputStrings[5]);
+                resultMusicalSymbol.Duration = int.Parse(_inputStrings[1]);
+                resultMusicalSymbol.AmountOfDots = int.Parse(_inputStrings[2]);
+                resultMusicalSymbol.Key = _inputStrings[3];
+                resultMusicalSymbol.Alter = int.Parse(_inputStrings[4]);
+                resultMusicalSymbol.Octave = int.Parse(_inputStrings[5]);
                 
 
                 return resultMusicalSymbol;

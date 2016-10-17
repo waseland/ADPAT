@@ -42,14 +42,14 @@ namespace DPA_Musicsheets.Lily
             return ConvertContent(lilypondFileContents);
         }
 
-        public ADPSheet ConvertText(string text)
+        public ADPSheet ConvertText(string _text)
         {
             ADPNote latestNote = new ADPNote();
             latestNote.Octave = 4;
             latestNote.Key = "C";
             int[] timeSignature = new int[2];
 
-            string[] lilypondFileContents = text.Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToArray();
+            string[] lilypondFileContents = _text.Split(' ').Where(x => !string.IsNullOrEmpty(x)).ToArray();
             for (int i = 0; i < lilypondFileContents.Length; i++)
             {
                 lilypondFileContents[i] = lilypondFileContents[i].Replace("\r\n", string.Empty);
@@ -206,13 +206,13 @@ namespace DPA_Musicsheets.Lily
             return adps;
         }
 
-        private string[] convertToInputStrings(string musicalSymbolInfo, ADPNote latestNote)
+        private string[] convertToInputStrings(string _musicalSymbolInfo, ADPNote _latestNote)
         {
             string[] resultInputStrings = new string[6];
 
-            string key = musicalSymbolInfo.Substring(0, 1);
+            string key = _musicalSymbolInfo.Substring(0, 1);
             
-            string durationValue = Regex.Match(musicalSymbolInfo, @"\d+").Value;
+            string durationValue = Regex.Match(_musicalSymbolInfo, @"\d+").Value;
             if(durationValue == "")
             {
                 return null;
@@ -227,10 +227,10 @@ namespace DPA_Musicsheets.Lily
             {
                 int amountOfDots = 0;
 
-                while (musicalSymbolInfo.Contains("."))
+                while (_musicalSymbolInfo.Contains("."))
                 {
-                    int x = musicalSymbolInfo.IndexOf(".");
-                    musicalSymbolInfo = musicalSymbolInfo.Remove(x, 1);
+                    int x = _musicalSymbolInfo.IndexOf(".");
+                    _musicalSymbolInfo = _musicalSymbolInfo.Remove(x, 1);
                     amountOfDots++;
                 }
 
@@ -239,11 +239,11 @@ namespace DPA_Musicsheets.Lily
                 resultInputStrings[2] = "" + amountOfDots;
                 resultInputStrings[3] = key.ToUpper();
 
-                if (musicalSymbolInfo.Contains("is"))
+                if (_musicalSymbolInfo.Contains("is"))
                 {
                     resultInputStrings[4] = "" + 1;
                 }
-                else if (musicalSymbolInfo.Contains("es"))
+                else if (_musicalSymbolInfo.Contains("es"))
                 {
                     resultInputStrings[4] = "" + 2;
                 }
@@ -252,22 +252,22 @@ namespace DPA_Musicsheets.Lily
                     resultInputStrings[4] = "" + 0;
                 }
 
-                resultInputStrings[5] = "" + calculateOctave(musicalSymbolInfo, latestNote);
+                resultInputStrings[5] = "" + calculateOctave(_musicalSymbolInfo, _latestNote);
             }
 
             return resultInputStrings;
         }
 
-        private int calculateOctave(string noteInfo, ADPNote latestNote)
+        private int calculateOctave(string _noteInfo, ADPNote _latestNote)
         {
-            string newKey = noteInfo.Substring(0, 1).ToUpper();
+            string newKey = _noteInfo.Substring(0, 1).ToUpper();
             int resultOctave;
 
             string[] keys = { "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B", "C", "D", "E", "F", "G", "A", "B" };
 
             int[] differences = new int[3];
 
-            int latestNoteIndex = Array.IndexOf(keys, latestNote.Key.Substring(0, 1), 7);
+            int latestNoteIndex = Array.IndexOf(keys, _latestNote.Key.Substring(0, 1), 7);
 
             int newKeyIndex1 = Array.IndexOf(keys, newKey, 0);
             int newKeyIndex2 = Array.IndexOf(keys, newKey, 7);
@@ -281,29 +281,29 @@ namespace DPA_Musicsheets.Lily
             if (differences[0] == differences.Min())
             {
                 // lower octave
-                resultOctave = latestNote.Octave - 1;
+                resultOctave = _latestNote.Octave - 1;
             }
             else if (differences[1] == differences.Min())
             {
                 //middle octave
-                resultOctave = latestNote.Octave;
+                resultOctave = _latestNote.Octave;
             }
             else
             {
                 // higher octave
-                resultOctave = latestNote.Octave + 1;
+                resultOctave = _latestNote.Octave + 1;
             }
 
-            while (noteInfo.Contains("'"))
+            while (_noteInfo.Contains("'"))
             {
                 resultOctave++;
-                noteInfo = noteInfo.Remove(noteInfo.IndexOf("'"), 1);
+                _noteInfo = _noteInfo.Remove(_noteInfo.IndexOf("'"), 1);
             }
 
-            while (noteInfo.Contains(","))
+            while (_noteInfo.Contains(","))
             {
                 resultOctave--;
-                noteInfo = noteInfo.Remove(noteInfo.IndexOf(","), 1);
+                _noteInfo = _noteInfo.Remove(_noteInfo.IndexOf(","), 1);
             }
 
             return resultOctave;

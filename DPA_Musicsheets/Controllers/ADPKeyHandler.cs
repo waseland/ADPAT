@@ -23,7 +23,7 @@ namespace DPA_Musicsheets.Controller
             initializeKeyChains();
         }
 
-        public void restartThread()
+        public void RestartThread()
         {
             updater.StopThread();
             updater.StartThread();
@@ -32,9 +32,8 @@ namespace DPA_Musicsheets.Controller
         public void OnKeyPressed()
         {
 
-            //updater.update();
 
-            restartThread();
+            RestartThread();
 
             if ((Keyboard.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt || (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) // Is Alt key pressed
             {

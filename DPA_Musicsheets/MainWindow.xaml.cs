@@ -115,7 +115,7 @@ namespace DPA_Musicsheets
             {
                 currentMemento--;
                 lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento));
-                keyHandler.restartThread();
+                keyHandler.RestartThread();
             }
 
 
@@ -128,7 +128,7 @@ namespace DPA_Musicsheets
             {
                 currentMemento++;
                 lilypondText.Text = originator.restoreFromMemento(careTaker.get(currentMemento - 1));
-                keyHandler.restartThread();
+                keyHandler.RestartThread();
             }
 
             ReEvaluateButtons();
@@ -246,7 +246,7 @@ namespace DPA_Musicsheets
                 {
                     ShowSheetVisualisation(sheet.getTrack());
                     NoteToLilypondConverter ntlc = new NoteToLilypondConverter();
-                    lilypondText.Text = ntlc.getLilypond(sheet);
+                    lilypondText.Text = ntlc.GetLilypond(sheet);
                     SetNewState();
                 }
             }
