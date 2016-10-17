@@ -119,8 +119,6 @@
     <Compile Include="Editor\Originator.cs" />
     <Compile Include="Editor\Updater.cs" />
     <Compile Include="Lily\LilyADPConverter.cs" />
-    <Compile Include="Lily\LilypondToPDF.cs" />
-    <Compile Include="Lily\SaveAsLilypond.cs" />
     <Compile Include="MidiTrack.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

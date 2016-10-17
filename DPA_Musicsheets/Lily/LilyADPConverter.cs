@@ -10,8 +10,6 @@ namespace DPA_Musicsheets.Lily
 {
     public class LilyADPConverter : ADPFileConverter
     {
-        private ADPMusicalSymbolFactory musicalSymbolFactory;
-
         private enum contentType 
         {
             none,
@@ -21,7 +19,6 @@ namespace DPA_Musicsheets.Lily
 
         public LilyADPConverter()
         {
-            musicalSymbolFactory = new ADPMusicalSymbolFactory();
             ext = ".ly";
         }
 
