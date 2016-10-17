@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows;
-using DPA_Musicsheets.Commands;
+﻿using DPA_Musicsheets.Commands;
 using System.Timers;
 
 namespace DPA_Musicsheets.Editor
