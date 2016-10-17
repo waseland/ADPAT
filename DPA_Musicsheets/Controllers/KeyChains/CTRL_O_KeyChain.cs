@@ -1,10 +1,5 @@
 ﻿using DPA_Musicsheets.Commands;
 using DPA_Musicsheets.Controller;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DPA_Musicsheets.Controllers.KeyChains
