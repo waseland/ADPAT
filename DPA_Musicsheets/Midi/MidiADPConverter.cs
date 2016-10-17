@@ -10,13 +10,11 @@ namespace DPA_Musicsheets.Midi
 {
     public class MidiADPConverter : ADPFileConverter
     {
-        private ADPMusicalSymbolFactory musicalSymbolFactory;
         private List<string> keyValues;
 
         public MidiADPConverter()
         {
             InitKeyValues();
-            musicalSymbolFactory = new ADPMusicalSymbolFactory();
             ext = ".mid";
         }
 

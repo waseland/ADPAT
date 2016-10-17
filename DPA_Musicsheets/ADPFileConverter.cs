@@ -10,7 +10,13 @@ namespace DPA_Musicsheets
     public abstract class ADPFileConverter
     {
         protected ADPFileConverter nextADPFileConverter;
+        protected ADPMusicalSymbolFactory musicalSymbolFactory;
         protected string ext;
+
+        public ADPFileConverter()
+        {
+            musicalSymbolFactory = new ADPMusicalSymbolFactory();
+        }
 
         public void SetNextADPFileConverter(ADPFileConverter _nextADPFileConverter)
         {
