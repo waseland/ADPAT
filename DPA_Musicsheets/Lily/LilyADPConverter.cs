@@ -292,7 +292,7 @@ namespace DPA_Musicsheets.Lily
             while (_noteInfo.Contains("'"))
             {
                 resultOctave++;
-                _noteInfo = noteInfo.Remove(_noteInfo.IndexOf("'"), 1);
+                _noteInfo = -noteInfo.Remove(_noteInfo.IndexOf("'"), 1);
             }
 
             while (_noteInfo.Contains(","))
