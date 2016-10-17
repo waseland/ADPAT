@@ -101,11 +101,11 @@ namespace DPA_Musicsheets.Lily
                     case "\\repeat":
                         tempBar = new ADPBar();
                         tempBar.MusicalSymbols = notes;
-                        int[] ts = new int[2];
-                        ts[0] = timeSignature[0];
-                        ts[1] = timeSignature[1];
-                        tempBar.TimeSignature = ts;
-                        adpt.Bars.Add(tempBar);
+                        int[] tempTimeSignature = new int[2];
+                        tempTimeSignature[0] = timeSignature[0];
+                        tempTimeSignature[1] = timeSignature[1];
+                        tempBar.TimeSignature = tempTimeSignature;
+                        //adpt.Bars.Add(tempBar);
                         notes = new List<ADPMusicalSymbol>();
                         i++;
                         i++;
@@ -126,10 +126,10 @@ namespace DPA_Musicsheets.Lily
                         {
                             tempBar = new ADPBar();
                             tempBar.MusicalSymbols = notes;
-                            ts = new int[2];
-                            ts[0] = timeSignature[0];
-                            ts[1] = timeSignature[1];
-                            tempBar.TimeSignature = ts;
+                            tempTimeSignature = new int[2];
+                            tempTimeSignature[0] = timeSignature[0];
+                            tempTimeSignature[1] = timeSignature[1];
+                            tempBar.TimeSignature = tempTimeSignature;
                             adpt.Bars.Add(tempBar);
                             notes = new List<ADPMusicalSymbol>();
                         }
