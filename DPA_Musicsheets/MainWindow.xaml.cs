@@ -52,7 +52,7 @@ namespace DPA_Musicsheets
             needsSaving = false;
         }
 
-        private void initializeFileConverters()
+        private void initializeFileConverters() //initializes the FileConverters (gets called in the constructor of MainWindow)
         {
             LilyADPConverter lyConverter = new LilyADPConverter();
             MidiADPConverter midConverter = new MidiADPConverter();
@@ -62,7 +62,7 @@ namespace DPA_Musicsheets
             firstFileConverter = lyConverter;
         }
 
-        private void initializeEditor()
+        private void initializeEditor() //initializes the Editor (gets called in the constructor of MainWindow)
         {
             savedMementos = 0;
             currentMemento = 0;
@@ -74,17 +74,17 @@ namespace DPA_Musicsheets
             reEvaluateButtons();
         }
 
-        private void showSheetVisualisation(ADPTrack _adpTrack)
+        private void showSheetVisualisation(ADPTrack _adpTrack) //ChannelCommand to show the Sheet in the MainWindow via the PSAMAdapter, takes a ADPTrack as parameter
         {
             barlinesScrollViewer.Content = psamAdapter.GetSheetVisualisation(_adpTrack);
         }
 
-        private void showSampleVisualisation()
+        private void showSampleVisualisation() //Shows the basic sample of how a Barline looks like in the MainWindow via the PSAMAdapter, takes a ADPTrack as paramter
         {
             barlinesScrollViewer.Content = psamAdapter.GetSampleVisualisation();
         }
 
-        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        private void btnPlay_Click(object sender, RoutedEventArgs e) //This gets called whenever the play button is clicked in the MainWindow (Plays the Midi File)
         {
             if(player != null)
             {
@@ -95,7 +95,7 @@ namespace DPA_Musicsheets
             player.Play(txt_MidiFilePath.Text);
         }
 
-        private void btnUndo_Click(object sender, RoutedEventArgs e)
+        private void btnUndo_Click(object sender, RoutedEventArgs e) //Undo's a chance in the editor, gets called by clicking the undo button in the MainWinwdow
         {
             CareTaker c = careTaker;
             if (currentMemento >= 1)
@@ -109,7 +109,7 @@ namespace DPA_Musicsheets
             reEvaluateButtons();
         }
 
-        private void btnRedo_Click(object sender, RoutedEventArgs e)
+        private void btnRedo_Click(object sender, RoutedEventArgs e) //Redo's a chance in the editor, gets called by clicking the undo button in the MainWinwdow
         {
             if (currentMemento < savedMementos)
             {
@@ -127,7 +127,7 @@ namespace DPA_Musicsheets
             Console.WriteLine("----------------------------- Update --------------------------");
         }
 
-        private void reEvaluateButtons()
+        private void reEvaluateButtons() //Checks if the undo and redo button should be enabled or not
         {
             if (savedMementos > 1 && currentMemento > 0)
             {
@@ -148,7 +148,7 @@ namespace DPA_Musicsheets
             }
         }
 
-        private void btnOpen_Click(object sender, RoutedEventArgs e)
+        private void btnOpen_Click(object sender, RoutedEventArgs e) //Calls the openfile function (See function: OpenFile)
         {
             // TODO remove
             OpenFile();
@@ -160,7 +160,7 @@ namespace DPA_Musicsheets
                 player.Dispose();
         }
 
-        private void btn_ShowContent_Click(object sender, RoutedEventArgs e)
+        private void btn_ShowContent_Click(object sender, RoutedEventArgs e) //Shows the content of a midi file in the tracks section of the MainWindow, also shows the sheetvisualisation
         {
             string extension = txt_MidiFilePath.Text.Split('.').Last();
 
@@ -176,7 +176,7 @@ namespace DPA_Musicsheets
             }
         }
 
-        private void showMidiTracks(IEnumerable<MidiTrack> _midiTracks)
+        private void showMidiTracks(IEnumerable<MidiTrack> _midiTracks)  //Shows the content of a midi file in the tracks section of the MainWindow
         {
             MidiTracks.Clear();
             foreach (var midiTrack in _midiTracks)
@@ -187,7 +187,7 @@ namespace DPA_Musicsheets
             tabCtrl_MidiContent.SelectedIndex = 0;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) //Function gets called when you want to close the MainWindow, checks if the editor needs saving
         {
             if(needsSaving)
             {
@@ -222,7 +222,7 @@ namespace DPA_Musicsheets
             }
         }
 
-        public void OpenFile()
+        public void OpenFile() //Opens a filedialog where you can select a file to open, accepts: midi and lilypond files
         {
             OpenFileDialog openFileDialog = new OpenFileDialog() { Filter = "Midi Files(.mid)|*.mid|Lily files (*.ly*)|*.ly*" };
             if (openFileDialog.ShowDialog() == true)
@@ -239,18 +239,18 @@ namespace DPA_Musicsheets
             }
         }
 
-        public void SaveFileToLilypond()
+        public void SaveFileToLilypond() //Channelcommand to save the editor as a a lilypond file (see class FileExporter)
         {
             fileExporter.SaveAsLilypond(lilypondText.Text);
             needsSaving = false;
         }
 
-        public void SaveFileToPdf()
+        public void SaveFileToPdf() //Channelcommand to save the editor as a a pdf file (see class FileExporter)
         {
             fileExporter.LilypondToPDF(lilypondText.Text);
         }
 
-        public string UpdateBarlinesFromLilypond()
+        public string UpdateBarlinesFromLilypond() //Channelcommand to update the barlines from the text in the editor (see class LilyADPConverter
         {
             return this.lilypondText.Dispatcher.Invoke(
                 () =>
@@ -265,19 +265,19 @@ namespace DPA_Musicsheets
             );
         }
 
-        public void AddTekstAtSelection(string _text)
+        public void AddTekstAtSelection(string _text) //replaces text to a specific selection of the editor, takes a string
         {
             int selectionStart = lilypondText.SelectionStart;
             lilypondText.SelectedText = _text;
             SetNewState();
         }
 
-        private void OnKeyDown(object sender, RoutedEventArgs e)
+        private void OnKeyDown(object sender, RoutedEventArgs e) //gets called whenever a key is pressed, sends the event to they KeyHandler
         {
             keyHandler.OnKeyPressed();
         }
 
-        private void OnKeyUp(object sender, KeyEventArgs e)
+        private void OnKeyUp(object sender, KeyEventArgs e) //gets called whenever a key is released, sends the event to they KeyHandler, mostly used for backspace
         {
             if (e.Key == System.Windows.Input.Key.Back)
             {
@@ -285,7 +285,7 @@ namespace DPA_Musicsheets
             }
         }
 
-        public void SetNewState()
+        public void SetNewState() //Sets a new state in the memento pattern
         {
             needsSaving = true;
             originator.SetState(lilypondText.Text);
@@ -296,7 +296,7 @@ namespace DPA_Musicsheets
             reEvaluateButtons();
         }
 
-        public void AddBarlinesToEditor()
+        public void AddBarlinesToEditor() //Adds barlines where missing to the selected text in the editor
         {
             int[] timeSignature = new int[2];
 

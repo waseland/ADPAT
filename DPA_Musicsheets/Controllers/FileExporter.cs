@@ -7,11 +7,11 @@ namespace DPA_Musicsheets.Controllers
 {
     public class FileExporter
     {
-        public void SaveAsLilypond(string _text)
+        public void SaveAsLilypond(string _text) //Saves the editor text as .ly (lilypond) file
         {
             if (_text == "")
             {
-
+                //If editor is empty, don't save
             }
             else
             {
@@ -25,7 +25,7 @@ namespace DPA_Musicsheets.Controllers
             }
         }
 
-        public void LilypondToPDF(string _text)
+        public void LilypondToPDF(string _text) //saves the editor as PDF, first it copies the lilypond text to a .ly file in C:\temp\ (Make sure this folder exists on your PC!)
         {
             string file = @"C:\temp\WriteText.ly";
             System.IO.File.WriteAllText(@file, _text);

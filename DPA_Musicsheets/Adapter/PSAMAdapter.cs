@@ -8,7 +8,7 @@ namespace DPA_Musicsheets.Adapter
 {
     public class PSAMAdapter
     {
-        public StackPanel GetSampleVisualisation()
+        public StackPanel GetSampleVisualisation() //Adds the sample to the barline in the MainWindow. To show how a barline looks like
         {
             StackPanel resultStackPanel = new StackPanel();
             IncipitViewerWPF barline = new IncipitViewerWPF();
@@ -41,7 +41,7 @@ namespace DPA_Musicsheets.Adapter
             return resultStackPanel;
         }
 
-        public StackPanel GetSheetVisualisation(ADPTrack _adpTrack)
+        public StackPanel GetSheetVisualisation(ADPTrack _adpTrack) //updates the barlines in the mainwindow to look like the ADPsheet that is given as the parameter
         {
             StackPanel resultStackPanel = new StackPanel();
             int barCount = 0;
@@ -113,7 +113,7 @@ namespace DPA_Musicsheets.Adapter
             return resultStackPanel;
         }
 
-        private MusicalSymbolDuration convertDuration(int _duration)
+        private MusicalSymbolDuration convertDuration(int _duration) //converts the duration of a note (int) to a MusicalSymbolDuration
         {
             switch (_duration)
             {
@@ -132,7 +132,7 @@ namespace DPA_Musicsheets.Adapter
             }
         }
 
-        private IncipitViewerWPF createNewBarline()
+        private IncipitViewerWPF createNewBarline() //Creats a new barline in the MainWindow
         {
             IncipitViewerWPF barLine = new IncipitViewerWPF();
             barLine.Width = 525;

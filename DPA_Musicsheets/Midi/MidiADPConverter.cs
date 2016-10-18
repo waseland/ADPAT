@@ -15,7 +15,7 @@ namespace DPA_Musicsheets.Midi
             ext = ".mid";
         }
 
-        public override ADPSheet ReadFile(String _path)
+        public override ADPSheet ReadFile(String _path) //Reads the path name and converts it to an ADPSheet and returns it as such.
         {
             var sequence = new Sequence();
             sequence.Load(_path);
@@ -98,14 +98,14 @@ namespace DPA_Musicsheets.Midi
             return returnSheet;
         }
 
-        private int calculateBarLength(int[] _timeSignature, double _wholeNoteLength)
+        private int calculateBarLength(int[] _timeSignature, double _wholeNoteLength) //calculates the length of a bar with the timesignature and how much the length of a whole note is, returns an int
         {
             double beatNoteLength = _wholeNoteLength / _timeSignature[1];
             int barLength = (int)(_timeSignature[0] * beatNoteLength);
             return barLength;
         }
 
-        private string[] convertToInputStrings(ChannelMessage _message, MidiEvent _midiEvent, double _wholeNoteLength)
+        private string[] convertToInputStrings(ChannelMessage _message, MidiEvent _midiEvent, double _wholeNoteLength) //Converts a midievent, notelength and message to a string[] of noteinformation and returns it
         {
             if (_midiEvent.DeltaTicks == 0)
             {
@@ -142,7 +142,7 @@ namespace DPA_Musicsheets.Midi
             return resultInputStrings;
         }
 
-        private int[] calculateDurationAndDots(int _deltaTime, double _wholeNoteLength)
+        private int[] calculateDurationAndDots(int _deltaTime, double _wholeNoteLength) //calculates the duration and the dots of a note by giving the deltatime and the wholenotelength. Returns an int[] with 0 : notelength and 1 : the amount of dots
         {
             int[] result = { 0, 0 };
 
@@ -193,7 +193,7 @@ namespace DPA_Musicsheets.Midi
             }
         }
 
-        private void InitKeyValues()
+        private void InitKeyValues() //initalizes the types of keyvalues there are in a list of strings
         {
             keyValues = new List<string>();
             keyValues.Add("C");

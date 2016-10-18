@@ -20,7 +20,7 @@ namespace DPA_Musicsheets.Lily
             ext = ".ly";
         }
 
-        public override ADPSheet ReadFile(string _path)
+        public override ADPSheet ReadFile(string _path) //Reads the file from a pathname, converts it to a string and returns it as a ADPSheet (See function: ConvertText)
         {
             ADPNote latestNote = new ADPNote();
             latestNote.Octave = 4;
@@ -37,7 +37,7 @@ namespace DPA_Musicsheets.Lily
             return ConvertContent(lilypondFileContents);
         }
 
-        public ADPSheet ConvertText(string _text)
+        public ADPSheet ConvertText(string _text) //Takes a string and converts it to a string[] and returns it as a ADPSheet (See function: ConvertContent)
         {
             ADPNote latestNote = new ADPNote();
             latestNote.Octave = 4;
@@ -55,7 +55,7 @@ namespace DPA_Musicsheets.Lily
         }
 
 
-        public ADPSheet ConvertContent(string[] _content)
+        public ADPSheet ConvertContent(string[] _content) //Takes a string array and converts it to an ADPSheet, then returns it
         {
             int[] timeSignature = new int[2];
             ADPNote latestNote = new ADPNote();
@@ -201,7 +201,7 @@ namespace DPA_Musicsheets.Lily
             return adps;
         }
 
-        private string[] convertToInputStrings(string _musicalSymbolInfo, ADPNote _latestNote)
+        private string[] convertToInputStrings(string _musicalSymbolInfo, ADPNote _latestNote) // Converts the info from a note to a string[] and returns it
         {
             string[] resultInputStrings = new string[6];
 
@@ -253,7 +253,7 @@ namespace DPA_Musicsheets.Lily
             return resultInputStrings;
         }
 
-        private int calculateOctave(string _noteInfo, ADPNote _latestNote)
+        private int calculateOctave(string _noteInfo, ADPNote _latestNote) //Converts the info of a note to the right octave the note should have and returns it as an int
         {
             string newKey = _noteInfo.Substring(0, 1).ToUpper();
             int resultOctave;

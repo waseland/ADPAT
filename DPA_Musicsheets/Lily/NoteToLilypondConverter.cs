@@ -7,7 +7,7 @@ namespace DPA_Musicsheets
 {
     public class NoteToLilypondConverter
     {
-        public string GetLilypond(ADPSheet _musicSheet)
+        public string GetLilypond(ADPSheet _musicSheet) //Converts the ADPSheet to a string so it can be put as lilypond text in the editor (See function: convertMusicalSymbols)
         {
             string result = "";
             result += "\\relative c' { \n";
@@ -27,7 +27,7 @@ namespace DPA_Musicsheets
             return result;
         }
 
-        private string convertMusicalSymbols(List<ADPBar> _bars)
+        private string convertMusicalSymbols(List<ADPBar> _bars) //Converts a list of ADPbars to a string and returns it
         {
             string result = "";
             ADPNote lastUsedNote = new ADPNote();
@@ -75,7 +75,7 @@ namespace DPA_Musicsheets
             return result;
         }
 
-        private string calculateOctave(ADPNote _newNote, ADPNote _oldNote)
+        private string calculateOctave(ADPNote _newNote, ADPNote _oldNote) //calculates the right octave from the noteinformation
         {
             string result = "";
             int nearestKeyOctave;

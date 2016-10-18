@@ -20,13 +20,13 @@ namespace DPA_Musicsheets.Controller
             initializeKeyChains();
         }
 
-        public void RestartThread()
+        public void RestartThread() //Restarts the timer when a key is pressed in the editor so the barlines in the mainwindow won't update
         {
             updater.StopThread();
             updater.StartThread();
         }
 
-        public void OnKeyPressed()
+        public void OnKeyPressed() //This gets called whenever a key gets pressed in the MainWindow, checks if the key that is pressed is a command key.
         {
 
             RestartThread();
@@ -45,7 +45,7 @@ namespace DPA_Musicsheets.Controller
             }
         }
 
-        private List<Key> getPressedKeys()
+        private List<Key> getPressedKeys() //Gets the key that is pressed
         {
             List<Key> pressedKeys = new List<Key>();
             //alt and control
@@ -101,7 +101,7 @@ namespace DPA_Musicsheets.Controller
             return pressedKeys;
         }
 
-        private void initializeKeyChains()
+        private void initializeKeyChains() //inits all the keys in the KeyChain, this gets called in the constructor of this class
         {
             KeyChain alt_b = new ALT_B_KeyChain(target);
             KeyChain alt_c = new ALT_C_KeyChain(target);
